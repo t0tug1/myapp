@@ -14,7 +14,7 @@ services:
       MYSQL_PORT: 3306
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_started
 
   db:
     image: mysql:8.0.43
@@ -25,11 +25,6 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     volumes:
       - db-data:/var/lib/mysql
     ports:
