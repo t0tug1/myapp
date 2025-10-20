@@ -1,0 +1,41 @@
+services:
+  dev:
+    build:
+      target: dev
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - .:/app
+      - /app/node_modules # node_modules を保護する
+    ports:
+      - "3000:3000"
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: [ "yarn", "dev" ]
+
+  db:
+    image: mysql:8.0.43
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3308:3306"
+
+volumes:
+  db-data:
