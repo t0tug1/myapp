@@ -2,8 +2,7 @@ services:
   dev:
     build:
       target: dev
-      context: ./
-      dockerfile: Dockerfile
+      # context:,dockerfile: 省略
     restart: always
     volumes:
       - .:/app
