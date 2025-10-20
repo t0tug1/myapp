@@ -1,0 +1,12 @@
+{
+    "name": "my-project-db",
+    // 1. Composeファイルの指定 (必須)
+    "dockerComposeFile": "../../docker-compose.yml",
+    // 2. 接続するサービス名の指定 (必須)
+    // ここには、ソースコードと開発ツールが含まれるサービス名を指定します。
+    "service": "db",
+    // 3. コンテナ内の作業ディレクトリ (必須)
+    "workspaceFolder": "/",
+    // 4. コンテナ停止時の動作 (推奨)
+    "shutdownAction": "stopCompose"
+}
