@@ -1,62 +1,24 @@
-.login-card {
-    min-width: 300px;
-    max-width: 400px;
+main {
+    padding-left: 52px;
+    padding-right: 52px;
+}
+
+.login-creat-card {
+    max-width: 680px;
     width: 100%;
 }
 
-.home-card {
-    max-width: 400px;
-    width: 100%;
+.selfcare-card {
+    height: 183px;
 }
 
-html,
-body {
-    height: 100%;
+/* ナビゲーションバーの高さ固定 */
+.navbar-fixed-top {
+    height: 56px;
 }
 
-body {
-    padding-top: 62px;
-}
-
-.container {
-    height: 100%;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    box-shadow:
-        -5px 0 10px rgba(0, 0, 0, 0.3),
-        5px 0 10px rgba(0, 0, 0, 0.3);
-}
-
-
-.nav-link {
-    height: 85%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-@media (max-width: 992px) {
-
-    .nav-tabs {
-        border-bottom: none;
-        /* ボーダーをなくす */
-    }
-
-    .nav-tabs .active {
-        border: none;
-        /* ボーダーなし */
-        border-radius: 5px;
-        /* 角を丸くしない */
-
-    }
-
-    .nav-link {
-        text-align: start;
-    }
-
-    .collapse {
-        margin-top: 0px;
-    }
-
+/* 3. メインレイアウトコンテナの設定 */
+.main-layout-wrapper {
+    height: calc(100vh - 56px);
+    /* 画面の高さ - ナビゲーションバーの高さ */
 }

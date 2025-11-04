@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ja" data-bs-theme="auto">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Self Care Tracker - セルフケア</title>
+
+    <!-- Bootstrap CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ナビゲーションバー -->
+    <header class="navbar navbar-expand-lg bg-light sticky-top p-0 shadow-sm navbar-fixed-top" data-bs-theme="light">
+        <div class="container-fluid px-4">
+            <!-- アプリ名 -->
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-5 fw-bold" href="#">Self Care Tracker</a>
+
+            <!-- ハンバーガーメニュー -->
+            <button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu"
+                aria-controls="sidebarMenu" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- メインナビゲーション -->
+            <div class="justify-content-end d-flex d-none d-lg-block">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item me-3">
+                        <a class="nav-link" aria-current="page" href="#">セルフケア</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link active" href="#">ダッシュボード</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-secondary btn-sm" type="button">アカウント情報</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインレイアウトコンテナ -->
+    <div class="container-fluid main-layout-wrapper">
+        <div class="row h-100">
+
+            <!-- サイドバー -->
+            <div class="sidebar border border-right col-lg-2 p-0 bg-body-tertiary">
+
+                <!-- PC時のサイドバーコンテナ -->
+                <div class="offcanvas-lg offcanvas-end bg-body-tertiary h-100" tabindex="-1" id="sidebarMenu"
+                    aria-labelledby="sidebarMenuLabel">
+
+                    <!-- モバイル用ヘッダー -->
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="sidebarMenuLabel">メニュー</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                            data-bs-target="#sidebarMenu" aria-label="Close"></button>
+                    </div>
+
+                    <!-- サイドバー本体 -->
+                    <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 h-100">
+                        <!-- 目次 -->
+                        <ul class="nav flex-column px-3" id="sidebarMenu">
+                            <li class="nav-item">
+                                <button type="button" class="nav-link py-2" id="dashboardPage">
+                                    ダッシュボード
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button" class="nav-link py-2" id="goodSignPage">
+                                    良好サイン
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button" class="nav-link py-2" id="warningSignPage">
+                                    注意サイン
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button" class="nav-link py-2" id="dangerSignPage">
+                                    悪化サイン
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button type="button" class="nav-link py-2" id="lifestyleHabitsPage">
+                                    生活習慣
+                                </button>
+                            <li class="nav-item me-3 d-lg-none">
+                                <hr>
+                            </li>
+                            <li class="nav-item me-3 d-lg-none">
+                                <a class="nav-link active" aria-current="page" href="#">セルフケア</a>
+                            </li>
+                            <li class="nav-item me-3 d-lg-none">
+                                <a class="nav-link" href="#">ダッシュボード</a>
+                            </li>
+                            <li class="nav-item d-lg-none">
+                                <button class="btn btn-secondary btn-sm" type="button">アカウント情報</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <main class="ms-sm-auto col-lg-10 px-md-4 overflow-y-auto h-100" data-bs-spy="scroll"
+                data-bs-target="#selfcare-nav" data-bs-offset="56" tabindex="0">
+                <div class="container mt-4" id="main-content-area">
+                    <!-- 動的にコンテンツが挿入される場所 -->
+                    <div class="row align-items-center border-bottom pb-2 mb-3">
+
+                        <div class="col-12 col-lg-3">
+                            <h2 class="fs-3 fw-bold text-center text-md-start mb-2 mb-md-0" id="graphTitle">折れ線グラフ</h2>
+                        </div>
+
+                        <div class="col-12 col-lg-7 d-flex justify-content-center justify-content-md-end my-2 my-md-0">
+                            <ul class="nav nav-pills" id="evaluationTabs" role="tablist">
+                                <li class="nav-item flex-grow-0" role="presentation">
+                                    <button class="nav-link active" id="five-step-tab" data-bs-toggle="pill"
+                                        data-bs-target="#five-step-content" type="button" role="tab"
+                                        aria-controls="five-step-content" aria-selected="true"
+                                        data-graph-title="折れ線グラフ">
+                                        5段階評価
+                                    </button>
+                                </li>
+
+                                <li class="nav-item flex-grow-0" role="presentation">
+                                    <button class="nav-link" id="three-step-tab" data-bs-toggle="pill"
+                                        data-bs-target="#three-step-content" type="button" role="tab"
+                                        aria-controls="three-step-content" aria-selected="false" data-graph-title="表">
+                                        3段階評価
+                                    </button>
+                                </li>
+
+                                <li class="nav-item flex-grow-0" role="presentation">
+                                    <button class="nav-link" id="numeric-tab" data-bs-toggle="pill"
+                                        data-bs-target="#numeric-content" type="button" role="tab"
+                                        aria-controls="numeric-content" aria-selected="false" data-graph-title="棒グラフ">
+                                        数値評価
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-12 col-lg-2 d-flex justify-content-end">
+                            <div class="btn-group" role="group" aria-label="期間の切り替え">
+
+                                <input type="radio" class="btn-check" name="period-options" id="period-week-radio"
+                                    autocomplete="off" checked>
+                                <label class="btn btn-outline-secondary" for="period-week-radio">
+                                    1週間
+                                </label>
+
+                                <input type="radio" class="btn-check" name="period-options" id="period-month-radio"
+                                    autocomplete="off">
+                                <label class="btn btn-outline-secondary" for="period-month-radio">
+                                    1ヶ月間
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="five-step-content" role="tabpanel">
+                            <p>5段階評価の折れ線グラフが表示されます。</p>
+                        </div>
+                        <div class="tab-pane fade" id="three-step-content" role="tabpanel">
+                            <p>3段階評価(○△✕)の表が表示されます。</p>
+                        </div>
+                        <div class="tab-pane fade" id="numeric-content" role="tabpanel">
+                            <p>数値評価の棒グラフが表示されます。</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

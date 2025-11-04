@@ -4,261 +4,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ホーム画面</title>
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>
+        Bootstrap Code Preview
+    </title>
 </head>
 
-<body class="bg-body-tertiary">
-    <!--modal-->
-    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">編集フォーム</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="userForm">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <h2 class="fs-5">項目タイトルを入力してください</h2>
-                            <input type="text" class="form-control form-control-lg" name="careItemTitle"
-                                aria-label=".form-control-lg example">
-                        </div>
-                        <hr>
-                        <h2 class="fs-5">評価を選択してください</h2>
-                        <div class="form-check form-check">
-                            <input class="form-check-input" type="radio" name="careItemList" id="careItem1" value="1">
-                            <label class="form-check-label" for="careItem1">達成度評価（〇・△・✕で評価）</label>
-                        </div>
-                        <div class="form-check form-check">
-                            <input class="form-check-input" type="radio" name="careItemList" id="careItem2" value="2">
-                            <label class="form-check-label" for="careItem2">スコア評価（1～10で評価）</label>
-                        </div>
-                        <div class="form-check form-check">
-                            <input class="form-check-input" type="radio" name="careItemList" id="careItem3" value="3">
-                            <label class="form-check-label" for="careItem3">コメント評価（コメントの入力）</label>
-                        </div>
-                        <div class="form-check form-check">
-                            <input class="form-check-input" type="radio" name="careItemList" id="careItem4" value="4">
-                            <label class="form-check-label" for="careItem4">時間（時間の入力）</label>
-                        </div>
-                    </div>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-secondary">
+        <div class="container-fluid px-5">
+            <span class="navbar-brand mb-0 h1">Self Care Tracker</span>
 
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">保存</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-                    </div>
-                </form>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+
+                    <li class="nav-item me-3">
+                        <a class="nav-link active" aria-current="page" href="home.html">セルフケア</a>
+                    </li>
+
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="dashboard.html">ダッシュボード</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <button class="btn btn-secondary btn-sm" type="button">アカウント情報</button>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div>
+    </nav>
+    <main class="container-fluid py-5">
 
-    <!--Navber-->
-    <header>
-        <nav class="navbar navbar-expand-lg bg-body-secondary fixed-top p-0">
-            <div class="container-fluid w-100">
-                <div class="row w-100 mx-0">
-                    <div class="col-10 col-lg-2 order-1 py-3">
-                        <a class="navbar-brand" href="#">Navbar</a>
-                    </div>
-                    <div class="col-2 order-lg-3 order-2 text-end my-auto">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                    </div>
-                    <div class="col-4 col-lg-8 order-lg-2 order-3">
-                        <div class="collapse navbar-collapse h-100" id="navbarSupportedContent">
-                            <ul class="navbar-nav nav-tabs nav-fill mx-lg-auto w-75 h-100">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">セルフケア</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">スケジュール管理</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">グラフ</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+        <section class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8 text-center pb-5 mb-4">
 
-    <!--mainコンテンツ-->
-    <div class="container bg-white">
-        <!--新規作成ボタン-->
-        <div class="row justify-content-end">
-            <div class="col-lg-4 my-3 me-5 text-end">
-                <button class="btn btn-primary btn-lg" type="button" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                        class="bi bi-plus-circle align-middle me-1" viewBox="0 0 16 16">
-                        <path
-                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                    </svg>
-                    <span class="align-middle" id="modalOpen">新規作成</span>
+                <!--    セルフケアを行っているかどうかを判定する処理が必要  -->
+
+                <h1 class="display-4 fw-bold mb-3">ようこそ<span class="text-primary">user-name</span>さん</h1>
+                <p class="lead mb-5">本日はまだセルフケアを行っていません。早速『セルフケアを行う』から始めましょう！</p>
+                <button class="btn btn-primary btn-lg fw-bold shadow-sm py-4 px-5" type="button">
+                    セルフケアを行う
                 </button>
-                <button class="btn btn-success btn-lg" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        class="bi bi-pencil-square align-middle me-1" viewBox="0 0 16 16">
-                        <path
-                            d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                        <path fill-rule="evenodd"
-                            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                    </svg>
-                    <span class="ps-2 align-middle">編集</span>
-                </button>
+
             </div>
-        </div>
-        <!--careItemの追加-->
-        <div class="row justify-content-center">
-            <div class="col-8 mt-4">
-                <h3>登録済みデータ</h3>
-                <div id="careItemArea"></div>
-            </div>
-        </div>
-    </div>
+        </section>
 
+        <hr class="my-5">
 
-    <!--JavaScript-->
-    <script>
-        let cardId = 0;
-        //.addEventListenerでsubmit発生時に処理を実行
-        //引数で渡されているeオブジェクトはEventオブジェクトといって自動的に渡される。
-        document.getElementById("userForm").addEventListener("submit", async function (e) {
+        <section class="row justify-content-center pt-4">
+            <div class="col-lg-10 col-xl-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
 
-            //.preventDefaultはeオブジェクトが標準で持っているメソッド。デフォルトの動作をキャンセルする。
-            //つまりsubmit（送信）を止める記述。
-            e.preventDefault(); // 通常の送信を止める
+                    <h2 class="h3 mb-0">本日のセルフケア</h2>
 
-            const formData = new FormData(this);                        //thisの中にはフォームに入力された値が入る。
-            const data = Object.fromEntries(formData);                  //formDataをObject.fromEntriesで別オブジェクトに変換
-            const text = data.careItemTitle.trim();                     //careItemTitleの入力値を取得
-            const item = document.getElementById("careItemArea");       //HTML生成エリアの取得
-            cardId++;
-
-
-            //サーバー送信処理
-            /*
-                        // サーバーに送信
-                        const res = await fetch("/save", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(data)
-                        });
-            
-                        console.log(data); //入力されたデータの確認
-            
-                        const savedUser = await res.json();
-            */
-
-            console.log(data.careItemList); //入力されたデータの確認
-
-            // 入力値の確認
-            if (text === "") {
-                alert("項目名を入力してください"); // careItemTitle
-                return;
-            } else if (!data.careItemList) {
-                alert("評価を入力してください"); // careItemList
-                return;
-            }
-
-            // カードを生成
-            const careTitle = document.createElement("div");
-            const careItem = document.createElement("div");
-
-            //HTML生成処理
-            //careItemTitleの生成
-            careTitle.innerHTML = `
-                <div class="card mb-2">
-                    <h4 class="card-text ms-4"><span>・</span>${text}</h4>
-                    <div class="card-body" id="careItemForm${cardId}">
+                    <div class="btn-group" role="group" aria-label="セルフケア操作">
+                        <button type="button" class="btn btn-info text-white">総合評価</button>
+                        <button type="button" class="btn btn-info text-white">入力データ</button>
+                        <button type="button" class="btn btn-success">入力データ変更</button>
                     </div>
                 </div>
-                `;
 
-            if (data.careItemList === "1") {
-                careItem.innerHTML = `
-                <div class="form-group">
-                  <label class="form-label d-block mb-2">三段階評価を選んでください</label>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="three" id="three1" value="〇">
-                    <label class="form-check-label" for="three1">〇</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="three" id="three2" value="△">
-                    <label class="form-check-label" for="three2">△</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="three" id="three3" value="✕">
-                    <label class="form-check-label" for="three3">✕</label>
-                  </div>
+                <div class="card p-4 text-muted bg-light">
+                    データがありません。セルフケアを開始してください。
                 </div>
-              `;
-            }
+            </div>
+        </section>
+    </main>
 
-            if (data.careItemList === "2") {
-                let radios = "";
-                for (let i = 1; i <= 10; i++) {
-                    radios += `
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="ten" id="ten${i}" value="${i}">
-                    <label class="form-check-label" for="ten${i}">${i}</label>
-                  </div>
-                `;
-                }
-                careItem.innerHTML = `
-                <div class="form-group">
-                  <label class="form-label d-block mb-2">1〜10の評価を選んでください</label>
-                  <div class="d-flex flex-wrap">${radios}</div>
-                </div>
-              `;
-            }
 
-            if (data.careItemList === "3") {
-                careItem.innerHTML = `
-                <div class="form-group">
-                  <label for="comment" class="form-label">コメントを入力してください</label>
-                  <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
-                </div>
-              `;
-            }
-
-            if (data.careItemList === "4") {
-                careItem.innerHTML = `
-                <div class="form-group">
-                  <label for="timeInput" class="form-label">時間を入力してください（h）</label>
-                  <input type="number" class="form-control" id="timeInput" name="time" min="0" step="0.5" placeholder="例: 1.5">
-                </div>
-              `;
-            }
-
-            //HTML追加処理
-            item.appendChild(careTitle); //careTitleをitemに追加
-            document.getElementById(`careItemForm${cardId}`).appendChild(careItem); //careItemをcareItemFormに追加
-
-            data.careItemTitle = ""; //テキストデータの初期化
-
-            // モーダルを閉じる
-            const modal = bootstrap.Modal.getInstance(document.getElementById("exampleModal"));
-            modal.hide();
-
-            // modalOpenにフォーカス(これをしないとモーダル内にフォーカスが残る)
-            document.getElementById("exampleModal").addEventListener('shown.bs.modal', () => {
-                document.getElementById('modalOpen').focus();
-            });
-
-            // フォームをリセット
-            this.reset();
-        });
-    </script>
-
-    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
