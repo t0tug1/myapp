@@ -91,48 +91,18 @@
     </div>
 
     <!-- ナビゲーションバー -->
-    <header class="navbar navbar-expand-lg bg-light sticky-top p-0 shadow-sm navbar-fixed-top" data-bs-theme="light">
-        <div class="container-fluid px-4">
-            <!-- アプリ名 -->
-            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-5 fw-bold" href="#">Self Care Tracker</a>
+    <header class="navbar sticky-top navbar-expand-lg bg-dark flex-md-nowrap p-0 shadow navbar-fixed-top"
+        data-bs-theme="dark">
+        <!-- アプリ名 -->
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">self care tracker</a>
 
-            <div class="d-flex d-lg-none d-lg-block ms-auto">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <button class="btn btn-secondary btn-sm" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                class="bi bi-person-fill" viewBox="0 0 16 16">
-                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-                            </svg>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- ハンバーガーメニュー -->
-            <button class="navbar-toggler ms-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu"
-                aria-controls="sidebarMenu" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- メインナビゲーション -->
-            <div class="justify-content-end d-flex d-none d-lg-block">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item me-3">
-                        <a class="nav-link active" aria-current="page" href="#">セルフケア</a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#">ダッシュボード</a>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-secondary btn-sm" type="button">アカウント情報</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <!-- ハンバーガーメニュー -->
+        <button class="navbar-toggler ms-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu"
+            aria-controls="sidebarMenu" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </header>
 
-    <!-- bottom navbar -->
     <nav class="navbar fixed-bottom bg-body-tertiary justify-content-center d-lg-none">
         <!-- 削除ボタン -->
         <button class="btn btn-danger btn-lg fw-bold d-lg-none mx-auto w-25" type="button">削除</button>
@@ -141,7 +111,7 @@
             data-bs-target="#newCreationModal">作成</button>
     </nav>
 
-    <!-- メインレイアウトコンテナ -->
+    <!-- コンテナ -->
     <div class="container-fluid main-layout-wrapper">
         <div class="row h-100">
 
@@ -161,42 +131,74 @@
 
                     <!-- サイドバー本体 -->
                     <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 h-100">
+                        <!-- サイドバー上 -->
+                        <h5 class="ms-3">目次</h5>
+                        <ul class="nav flex-column mt-2">
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
+                                    href="#good-sign">
+                                    良好サイン
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="#warning-sign">
+                                    注意サイン
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="#danger-sign">
+                                    悪化サイン
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="#lifestyle">
+                                    生活習慣
+                                </a>
+                            </li>
+                        </ul>
 
-                        <!-- 上部 (目次と送信ボタン) -->
-                        <div class="flex-fill h-100">
+                        <hr class="mt-4">
 
-                            <!-- 目次 -->
-                            <ul class="nav flex-column px-3" id="sidebarMenu">
-                                <li class="nav-item">
-                                    <a class="nav-link py-2" href="#good-sign">良好サイン</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link py-2" href="#caution-sign">注意サイン</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link py-2" href="#worsen-sign">悪化サイン</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link py-2" href="#lifestyle">生活習慣</a>
-                                </li>
-                                <li class="nav-item me-3 d-lg-none">
-                                    <hr>
-                                </li>
-                                <li class="nav-item me-3 d-lg-none">
-                                    <a class="nav-link active" aria-current="page" href="#">セルフケア</a>
-                                </li>
-                                <li class="nav-item me-3 d-lg-none">
-                                    <a class="nav-link" href="#">ダッシュボード</a>
-                                </li>
-                            </ul>
-                            <!-- 作成ボタン -->
-                            <div class="d-grid p-3 mt-3">
-                                <button class="btn btn-primary btn-lg fw-bold d-none d-lg-block" type="button"
-                                    data-bs-toggle="modal" data-bs-target="#newCreationModal"
-                                    id="openModalBtn">作成</button>
-                            </div>
+                        <!-- サイドバー中 -->
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    セルフケアを行う
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    項目編集
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    ダッシュボード
+                                </a>
+                            </li>
+                        </ul>
+
+                        <hr class="mt-4">
+
+                        <!-- サイドバー下 -->
+                        <ul class="nav flex-column mb-5">
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    アカウント設定
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="#">
+                                    ログアウト
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- 作成ボタン -->
+                        <div class="d-grid p-3 mt-3">
+                            <button class="btn btn-primary btn-lg fw-bold d-none d-lg-block" type="button"
+                                data-bs-toggle="modal" data-bs-target="#newCreationModal" id="openModalBtn">作成</button>
                         </div>
-                        <!-- 下部 (削除ボタン) -->
+                        <!-- 削除ボタン -->
                         <div class="p-3 border-top">
                             <button class="btn btn-danger w-100 fw-bold d-none d-lg-block" type="button">削除</button>
                         </div>
@@ -205,10 +207,7 @@
             </div>
 
             <!-- メインコンテンツ -->
-            <main class="ms-sm-auto col-lg-10 px-md-4 overflow-y-auto h-100" data-bs-spy="scroll"
-                data-bs-target="#selfcare-nav" data-bs-offset="56" tabindex="0">
-
-                <!-- 良好サイン -->
+            <main class="col-lg-10 px-md-4 overflow-y-auto h-100">
                 <section id="good-sign" class="mb-5 pb-4 border-bottom">
                     <div class="card card-body bg-light text-center py-4 mb-4">
                         <h2 class="h1 fw-bold mb-0">良好サイン</h2>
@@ -409,7 +408,7 @@
                 </section>
 
                 <!-- 注意サイン -->
-                <section id="caution-sign" class="mb-5 pb-4 border-bottom">
+                <section id="warning-sign" class="mb-5 pb-4 border-bottom">
                     <div class="card card-body bg-light text-center py-4 mb-4">
                         <h2 class="h1 fw-bold mb-0">注意サイン</h2>
                     </div>
@@ -418,7 +417,7 @@
                 </section>
 
                 <!-- 悪化サイン -->
-                <section id="worsen-sign" class="mb-5 pb-4 border-bottom">
+                <section id="danger-sign" class="mb-5 pb-4 border-bottom">
                     <div class="card card-body bg-light text-center py-4 mb-4">
                         <h2 class="h1 fw-bold mb-0">悪化サイン</h2>
                     </div>
