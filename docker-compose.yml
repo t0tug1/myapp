@@ -10,25 +10,27 @@ services:
     ports:
       - "3000:3000"
     environment:
-      MYSQL_HOST: db
-      MYSQL_PORT: 3306
+      PGHOST: db
+      PGDATABASE: database
+      PGUSER: root
+      PGPASSWORD: password
+      PGPORT: 5432
     depends_on:
       db:
         condition: service_started
 
   db:
-    image: mysql:8.0.43
-    container_name: mysql
+    image: postgres:16
+    container_name: postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      POSTGRES_PASSWORD: password
+      POSTGRES_DATABASE: database
+      POSTGRES_USER: root
     volumes:
-      - db-data:/var/lib/mysql
+      - db-data:/var/lib/postgresql/data
     ports:
-      - "3308:3306"
+      - "3308:5432"
 
 volumes:
   db-data:
