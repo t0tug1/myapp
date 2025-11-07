@@ -10,6 +10,32 @@
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 
+    <!-- Chart.jsライブラリの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      /* メインコンテナのスタイル */
+      main {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      /* グラフを表示するためのスタイル */
+      #js-result {
+        display: flex;
+        flex-wrap: wrap;
+        width: 50%;
+        gap: 20px;
+        justify-content: center;
+      }
+      /* キャンバス（グラフ）自体のスタイル */
+      canvas {
+        flex: 1 0 48%;
+        max-width: 100%;
+        height: 50vh;
+        margin-bottom: 20px;
+      }
+    </style>
+
 </head>
 
 <body>
@@ -130,6 +156,7 @@
                 <div class="container mt-4" id="main-header-area">
 
                     <!-- 動的にコンテンツが挿入される場所 -->
+
                     <div class="row align-items-center border-bottom pb-2 mb-3">
 
                         <!-- ヘッダータイトル -->
@@ -199,23 +226,52 @@
                         </div>
                     </div>
 
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="five-step-content" role="tabpanel">
-                            <p>5段階評価の折れ線グラフが表示されます。</p>
-                        </div>
-                        <div class="tab-pane fade" id="three-step-content" role="tabpanel">
-                            <p>3段階評価(○△✕)の表が表示されます。</p>
-                        </div>
-                        <div class="tab-pane fade" id="numeric-content" role="tabpanel">
-                            <p>数値評価の棒グラフが表示されます。</p>
-                        </div>
+                    <!-- グラフ・表の挿入 -->
+                    <div class="col-10" id="js-result">
                     </div>
                 </div>
+
             </main>
         </div>
     </div>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/js/dashboard.js"></script>
+
+    <!-- chart.js script -->
+    <script>
+      // グラフを描画するためのキャンバス要素を生成する関数
+      const result = document.getElementById("js-result");
+      const createCanvas = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 400;
+        canvas.height = 200;
+        result.appendChild(canvas);
+        return canvas;
+      };
+
+      // ここに試したいchart機能を入れます
+const lineChart = new Chart(createCanvas(), {
+  type: "line",
+  data: {
+    labels: ["January", "February", "March", "April", "May", "June", "July"], // X軸のラベル
+    datasets: [{
+      label: "Sales", // データセットのラベル
+      data: [12, 19, 3, 5, 2, 3, 10], // Y軸のデータ
+      borderColor: "rgb(75, 192, 192)", // 線の色
+      tension: 0.1, // 線のカーブの緩やかさ
+    }],
+  },
+  options: {
+    responsive: true, // 画面サイズに応じてリサイズ
+    scales: {
+      y: {
+        beginAtZero: true, // Y軸の開始値を0に設定
+      },
+    },
+  },
+});
+      
+    </script>
 </body>
 
 </html>
