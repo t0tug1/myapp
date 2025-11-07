@@ -4,18 +4,17 @@
  */
 
 //グラフファイル読み込み
-export function loadDashboardGraphsContents(){
+export function loadWarningSignGraphsContents(){
     const scriptElement = document.createElement('script');
 
-    scriptElement.src = './dashboard-graphs.js';
+    scriptElement.src = './warning-sign-graphs.js';
 
     document.body.appendChild(scriptElement);
 }
 
-// ダッシュボードを生成する関数
-export function loadDashboardContent(container) {
-
-    // 1. 挿入するHTMLコンテンツ
+// 警告サインページを生成する関数
+export function loadWarningSignContent(container) {
+    // 警告サインページのHTMLをここに実装
     container.innerHTML = `
             <div class="row align-items-center border-bottom pb-2 mb-3">
 
@@ -73,6 +72,7 @@ export function loadDashboardContent(container) {
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="five-step-content" role="tabpanel">
                     <p>5段階評価の折れ線グラフが表示されます。</p>
+                    <p>ここは警告サインページの内容です。</p>
                 </div>
                 <div class="tab-pane fade" id="three-step-content" role="tabpanel">
                     <p>3段階評価(○△✕)の表が表示されます。</p>
@@ -82,10 +82,6 @@ export function loadDashboardContent(container) {
                 </div>
             </div>
     `;
-
-    // 2. コンテナの中身を丸ごと書き換える
-    container.innerHTML = dashboardHTML;
-
 
     // 3. 【重要】HTML挿入後に、Bootstrapタブのイベントリスナーをセットアップ
     // (Bootstrap 5 の `bootstrap.Tab` がロードされている必要があります)
