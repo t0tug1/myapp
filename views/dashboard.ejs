@@ -132,34 +132,49 @@
                     <!-- 動的にコンテンツが挿入される場所 -->
                     <div class="row align-items-center border-bottom pb-2 mb-3">
 
-                        <div class="col-12 col-lg-3">
-                            <h2 class="fs-3 fw-bold text-center text-md-start mb-2 mb-md-0" id="graphTitle">折れ線グラフ</h2>
+                        <!-- ヘッダータイトル -->
+                        <div class="col-12 col-lg-3 tab-content">
+
+                            <!-- 折れ線グラフ -->
+                            <div class="tab-pane fade show active" id="five-step-title" role="tabpanel">
+                                <h2 class="fw-bold text-md-start text-center mb-2 mb-md-0">折れ線グラフ</h2>
+                            </div>
+
+                            <!-- 表 -->
+                            <div class="tab-pane fade" id="three-step-title" role="tabpanel">
+                                <h2 class="fw-bold text-md-start text-center mb-2 mb-md-0">表</h2>
+                            </div>
+
+                            <!-- 棒グラフ-->
+                            <div class="tab-pane fade" id="numeric-title" role="tabpanel">
+                                <h2 class="fw-bold text-md-start text-center mb-2 mb-md-0">棒グラフ</h2>
+                            </div>
                         </div>
 
                         <!-- ヘッダーボタン -->
                         <div class="col-12 col-lg-7 d-flex justify-content-center justify-content-md-end my-2 my-md-0">
                             <ul class="nav nav-pills" id="evaluationTabs" role="tablist">
                                 <li class="nav-item flex-grow-0" role="presentation">
-                                    <button class="nav-link active" id="five-step-tab" data-bs-toggle="pill"
-                                        data-bs-target="#five-step-content" type="button" role="tab"
-                                        aria-controls="five-step-content" aria-selected="true"
+                                    <button class="nav-link active" id="five-step-title" data-bs-toggle="pill"
+                                        data-bs-target="#five-step-title" type="button" role="tab"
+                                        aria-controls="five-step-title" aria-selected="true"
                                         data-graph-title="折れ線グラフ">
                                         5段階評価
                                     </button>
                                 </li>
 
                                 <li class="nav-item flex-grow-0" role="presentation">
-                                    <button class="nav-link" id="three-step-tab" data-bs-toggle="pill"
-                                        data-bs-target="#three-step-content" type="button" role="tab"
-                                        aria-controls="three-step-content" aria-selected="false" data-graph-title="表">
+                                    <button class="nav-link" id="three-step-title" data-bs-toggle="pill"
+                                        data-bs-target="#three-step-title" type="button" role="tab"
+                                        aria-controls="three-step-title" aria-selected="false" data-graph-title="表">
                                         3段階評価
                                     </button>
                                 </li>
 
                                 <li class="nav-item flex-grow-0" role="presentation">
-                                    <button class="nav-link" id="numeric-tab" data-bs-toggle="pill"
-                                        data-bs-target="#numeric-content" type="button" role="tab"
-                                        aria-controls="numeric-content" aria-selected="false" data-graph-title="棒グラフ">
+                                    <button class="nav-link" id="numeric-title" data-bs-toggle="pill"
+                                        data-bs-target="#numeric-title" type="button" role="tab"
+                                        aria-controls="numeric-title" aria-selected="false" data-graph-title="棒グラフ">
                                         数値評価
                                     </button>
                                 </li>
