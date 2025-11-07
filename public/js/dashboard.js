@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lifestyleHabitsButton = document.getElementById('lifestyleHabitsPage');
 
     // 2. HTMLを挿入するコンテナを取得
-    const contentContainer = document.getElementById('main-content-area');
+    const contentContainer = document.getElementById('main-header-area');
 
     // 各種ページ生成関数呼び出し
     // 3. ボタンにクリックイベントを設定
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * @param {HTMLElement} container - HTMLを挿入する先のコンテナ要素
  */
 
-// ダッシュボードの関数
+// ダッシュボードを生成する関数
 function loadDashboardContent(container) {
 
     // 1. 挿入するHTMLコンテンツ
@@ -131,7 +131,7 @@ function loadDashboardContent(container) {
     setupDynamicBootstrapTabs(container);
 }
 
-// 良好サインページの関数
+// 良好サインページを生成する関数
 function loadGoodSignContent(container) {
 
     // 1. 挿入するHTMLコンテンツ
@@ -208,7 +208,7 @@ function loadGoodSignContent(container) {
     setupDynamicBootstrapTabs(container);
 }
 
-// 警告サインページの関数
+// 警告サインページを生成する関数
 function loadWarningSignContent(container) {
     // 警告サインページのHTMLをここに実装
     container.innerHTML = `
@@ -284,7 +284,7 @@ function loadWarningSignContent(container) {
     setupDynamicBootstrapTabs(container);
 }
 
-// 危険サインページの関数
+// 危険サインページを生成する関数
 function loadDangerSignContent(container) {
     // 危険サインページのHTMLをここに実装
     container.innerHTML = `<div class="row align-items-center border-bottom pb-2 mb-3">
@@ -357,7 +357,7 @@ function loadDangerSignContent(container) {
     setupDynamicBootstrapTabs(container);
 }
 
-// 生活習慣ページの関数
+// 生活習慣ページを生成する関数
 function loadLifestyleHabitsContent(container) {
     // 生活習慣ページのHTMLをここに実装
     container.innerHTML = `<div class="row align-items-center border-bottom pb-2 mb-3">
