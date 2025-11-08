@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentContainer = document.getElementById('main-header-area');
 
     // 各種ページ生成関数呼び出し
-    
+
     //初回リロードページ
     loadDashboardContent(contentContainer); // ダッシュボードを作成
     drawDashboardGraphs();
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dashboardButton.addEventListener('click', () => {
         // ダッシュボードのHTMLを生成・挿入する関数を呼び出す
         loadDashboardContent(contentContainer); // ダッシュボードを作成
-        loadDashboardGraphsContents();
+        drawDashboardGraphs();
     });
 
     // goodSignPage ボタン
