@@ -6,8 +6,7 @@
 // 危険サインページを生成する関数
 export function loadDangerSignContent(container) {
     // 危険サインページのHTMLをここに実装
-    container.innerHTML = `<div class="row align-items-center border-bottom pb-2 mb-3">
-
+    container.innerHTML = `
                 <div class="col-12 col-lg-3">
                     <h2 class="fs-3 fw-bold text-center text-md-start mb-2 mb-md-0" id="graphTitle">折れ線グラフ</h2>
                 </div>
@@ -57,20 +56,8 @@ export function loadDangerSignContent(container) {
                         </label>
                     </div>
                 </div>
-            </div>
+    `;
 
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="five-step-content" role="tabpanel">
-                    <p>5段階評価の折れ線グラフが表示されます。</p>
-                    <p>ここは悪化サインページの内容です。</p>
-                </div>
-                <div class="tab-pane fade" id="three-step-content" role="tabpanel">
-                    <p>3段階評価(○△✕)の表が表示されます。</p>
-                </div>
-                <div class="tab-pane fade" id="numeric-content" role="tabpanel">
-                    <p>数値評価の棒グラフが表示されます。</p>
-                </div>
-            </div>`;
     // 3. 【重要】HTML挿入後に、Bootstrapタブのイベントリスナーをセットアップ
     // (Bootstrap 5 の `bootstrap.Tab` がロードされている必要があります)
     setupDynamicBootstrapTabs(container);
