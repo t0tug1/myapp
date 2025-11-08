@@ -3,15 +3,6 @@
  * @param {HTMLElement} container - HTMLを挿入する先のコンテナ要素
  */
 
-//グラフファイル読み込み
-export function loadWarningSignGraphsContents(){
-    const scriptElement = document.createElement('script');
-
-    scriptElement.src = './warning-sign-graphs.js';
-
-    document.body.appendChild(scriptElement);
-}
-
 // 警告サインページを生成する関数
 export function loadWarningSignContent(container) {
     // 警告サインページのHTMLをここに実装
@@ -118,5 +109,41 @@ function setupDynamicBootstrapTabs(container) {
                 graphTitle.textContent = newTitle;
             }
         });
+    });
+}
+
+// グラフを描画する関数
+export function drawWarningSignGraphs() {
+    const result = document.getElementById("js-result");
+    const createCanvas = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 400;
+        canvas.height = 200;
+        result.appendChild(canvas);
+        return canvas;
+    };
+
+    // グラフが複数回描画されないように、既存のグラフをクリアする
+    result.innerHTML = '';
+
+    const lineChart = new Chart(createCanvas(), {
+        type: "line",
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [{
+                label: "Sales",
+                data: [12, 19, 3, 5, 2, 3, 10],
+                borderColor: "rgb(75, 192, 192)",
+                tension: 0.1,
+            }],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
     });
 }

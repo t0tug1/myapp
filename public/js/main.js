@@ -1,8 +1,8 @@
-import { loadDashboardContent, loadDashboardGraphsContents } from './dashboard.js';
-import { loadGoodSignContent, loadGoodSignGraphsContents } from './good-sign.js';
-import { loadWarningSignContent, loadWarningSignGraphsContents } from './warning-sign.js';
-import { loadDangerSignContent, loadDangerSignGraphsContents } from './danger-sign.js';
-import { loadLifestyleHabitsContent, loadLifestyleHabitsGraphsContents } from './lifestyle-habits.js';
+import { loadDashboardContent, drawDashboardGraphs } from './dashboard.js';
+import { loadGoodSignContent, drawGoodSignGraphs } from './good-sign.js';
+import { loadWarningSignContent, drawWarningSignGraphs } from './warning-sign.js';
+import { loadDangerSignContent, drawDangerSignGraphs } from './danger-sign.js';
+import { loadLifestyleHabitsContent, drawLifestyleHabitsGraphs } from './lifestyle-habits.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -29,28 +29,28 @@ document.addEventListener('DOMContentLoaded', () => {
     goodSignButton.addEventListener('click', () => {
         // 良好サインページのHTMLを生成・挿入する関数を呼び出す
         loadGoodSignContent(contentContainer);
-        loadGoodSignGraphsContents();
+        drawGoodSignGraphs();
     });
 
     // warningSignPage ボタン
     warningSignButton.addEventListener('click', () => {
         // 警告サインページのHTMLを生成・挿入する関数を呼び出す
         loadWarningSignContent(contentContainer);
-        loadWarningSignGraphsContents();
+        drawWarningSignGraphs();
     });
 
     // dangerSignPage ボタン
     dangerSignButton.addEventListener('click', () => {
         // 危険サインページのHTMLを生成・挿入する関数を呼び出す
         loadDangerSignContent(contentContainer);
-        loadDangerSignGraphsContents();
+        drawDangerSignGraphs();
     });
 
     // lifestyleHabitsPage ボタン
     lifestyleHabitsButton.addEventListener('click', () => {
         // 生活習慣ページのHTMLを生成・挿入する関数を呼び出す
         loadLifestyleHabitsContent(contentContainer);
-        loadLifestyleHabitsGraphsContents();
+        drawLifestyleHabitsGraphs();
     });
 });
 
