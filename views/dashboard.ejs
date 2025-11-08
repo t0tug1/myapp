@@ -19,6 +19,7 @@
         display: flex;
         justify-content: center;
       }
+
       /* グラフを表示するためのスタイル */
       #js-result {
         display: flex;
@@ -27,6 +28,7 @@
         gap: 20px;
         justify-content: center;
       }
+
       /* キャンバス（グラフ）自体のスタイル */
       canvas {
         flex: 1 0 48%;
@@ -156,79 +158,23 @@
                 <div class="container mt-4" id="main-header-area">
 
                     <!-- 動的にコンテンツが挿入される場所 -->
-
-                    <div class="row align-items-center border-bottom pb-2 mb-3">
-
-                        <!-- ヘッダータイトル -->
-                        <div class="col-12 col-lg-3 tab-content">
-
-                            <!-- 折れ線グラフ -->
-                            <div class="tab-pane fade show active" id="five-step-title" role="tabpanel">
-                                <h2 class="fw-bold text-md-start text-center mb-2 mb-md-0">折れ線グラフ</h2>
+                    <div class="row align-items-center border-bottom pb-2 mb-3" id="main-header-area">
                             </div>
-
-                            <!-- 表 -->
-                            <div class="tab-pane fade" id="three-step-title" role="tabpanel">
-                                <h2 class="fw-bold text-md-start text-center mb-2 mb-md-0">表</h2>
-                            </div>
-
-                            <!-- 棒グラフ-->
-                            <div class="tab-pane fade" id="numeric-title" role="tabpanel">
-                                <h2 class="fw-bold text-md-start text-center mb-2 mb-md-0">棒グラフ</h2>
-                            </div>
-                        </div>
-
-                        <!-- ヘッダーボタン -->
-                        <div class="col-12 col-lg-7 d-flex justify-content-center justify-content-md-end my-2 my-md-0">
-                            <ul class="nav nav-pills" id="evaluationTabs" role="tablist">
-                                <li class="nav-item flex-grow-0" role="presentation">
-                                    <button class="nav-link active" id="five-step-title" data-bs-toggle="pill"
-                                        data-bs-target="#five-step-title" type="button" role="tab"
-                                        aria-controls="five-step-title" aria-selected="true"
-                                        data-graph-title="折れ線グラフ">
-                                        5段階評価
-                                    </button>
-                                </li>
-
-                                <li class="nav-item flex-grow-0" role="presentation">
-                                    <button class="nav-link" id="three-step-title" data-bs-toggle="pill"
-                                        data-bs-target="#three-step-title" type="button" role="tab"
-                                        aria-controls="three-step-title" aria-selected="false" data-graph-title="表">
-                                        3段階評価
-                                    </button>
-                                </li>
-
-                                <li class="nav-item flex-grow-0" role="presentation">
-                                    <button class="nav-link" id="numeric-title" data-bs-toggle="pill"
-                                        data-bs-target="#numeric-title" type="button" role="tab"
-                                        aria-controls="numeric-title" aria-selected="false" data-graph-title="棒グラフ">
-                                        数値評価
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-12 col-lg-2 d-flex justify-content-end">
-                            <div class="btn-group" role="group" aria-label="期間の切り替え">
-
-                                <input type="radio" class="btn-check" name="period-options" id="period-week-radio"
-                                    autocomplete="off" checked>
-                                <label class="btn btn-outline-secondary" for="period-week-radio">
-                                    1週間
-                                </label>
-
-                                <input type="radio" class="btn-check" name="period-options" id="period-month-radio"
-                                    autocomplete="off">
-                                <label class="btn btn-outline-secondary" for="period-month-radio">
-                                    1ヶ月間
-                                </label>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- グラフ・表の挿入 -->
-                    <div class="col-10" id="js-result">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="five-step-content" role="tabpanel">
+                            <div class="col-10" id="js-result">
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="three-step-content" role="tabpanel">
+                            <p>3段階評価(○△✕)の表が表示されます。</p>
+                        </div>
+                        <div class="tab-pane fade" id="numeric-content" role="tabpanel">
+                            <p>数値評価の棒グラフが表示されます。</p>
+                        </div>
                     </div>
+
                 </div>
 
             </main>

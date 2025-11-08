@@ -6,19 +6,23 @@ import { loadLifestyleHabitsContent, drawLifestyleHabitsGraphs } from './lifesty
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. トリガーとなるボタンを取得
-    //もしかしたら変数も各ファイルで宣言する必要性があるかも
+    // トリガーとなるボタンを取得
     const dashboardButton = document.getElementById('dashboardPage');
     const goodSignButton = document.getElementById('goodSignPage');
     const warningSignButton = document.getElementById('warningSignPage');
     const dangerSignButton = document.getElementById('dangerSignPage');
     const lifestyleHabitsButton = document.getElementById('lifestyleHabitsPage');
 
-    // 2. HTMLを挿入するコンテナを取得
+    // HTMLを挿入するコンテナを取得
     const contentContainer = document.getElementById('main-header-area');
 
     // 各種ページ生成関数呼び出し
-    // 3. ボタンにクリックイベントを設定
+    
+    //初回リロードページ
+    loadDashboardContent(contentContainer); // ダッシュボードを作成
+    drawDashboardGraphs();
+
+    // ボタンにクリックイベントを設定
     dashboardButton.addEventListener('click', () => {
         // ダッシュボードのHTMLを生成・挿入する関数を呼び出す
         loadDashboardContent(contentContainer); // ダッシュボードを作成
@@ -53,4 +57,3 @@ document.addEventListener('DOMContentLoaded', () => {
         drawLifestyleHabitsGraphs();
     });
 });
-
