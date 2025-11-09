@@ -59,10 +59,6 @@ export function loadDashboardContent(container) {
                 </div>
     `;
 
-    // 2. コンテナの中身を丸ごと書き換える
-    container.innerHTML = dashboardHTML;
-
-
     // 3. 【重要】HTML挿入後に、Bootstrapタブのイベントリスナーをセットアップ
     // (Bootstrap 5 の `bootstrap.Tab` がロードされている必要があります)
     setupDynamicBootstrapTabs(container);
