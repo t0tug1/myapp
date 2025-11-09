@@ -64,54 +64,20 @@ export function loadDashboardContent(container) {
     setupDynamicBootstrapTabs(container);
 }
 
-/**
- * 動的に挿入されたHTML内のBootstrapタブ機能を有効にし、
- * タイトル書き換えイベントを設定する関数
- * @param {HTMLElement} container - HTMLが挿入された親コンテナ
- */
-function setupDynamicBootstrapTabs(container) {
-    // 挿入されたHTML内のタイトル要素とタブボタンを取得
-    const graphTitle = container.querySelector('#graphTitle');
-    const tabButtons = container.querySelectorAll('#evaluationTabs button[data-bs-toggle="pill"]');
-
-    if (!graphTitle) {
-        console.error('#graphTitle が見つかりません。');
-        return;
-    }
-
-    tabButtons.forEach(tabButton => {
-        // Bootstrap 5 の Tab インスタンスを手動で取得または作成
-        // (これにより、innerHTML で挿入後も Bootstrap が要素を認識します)
-        const tabInstance = bootstrap.Tab.getOrCreateInstance(tabButton);
-
-        // 'shown.bs.tab' (タブが表示された後) イベントをリッスン
-        tabButton.addEventListener('shown.bs.tab', event => {
-            // event.target はクリックされたタブボタン（<button>）
-            const newTitle = event.target.getAttribute('data-graph-title');
-
-            if (newTitle) {
-                // H2 (graphTitle) のテキストを更新
-                graphTitle.textContent = newTitle;
-            }
-        });
-    });
-}
-
-// グラフを描画する関数
-export function drawDashboardGraphs() {
-    const result = document.getElementById("js-result");
+// 折れ線グラフを描画する関数
+export function drawDashboardLineGraphs() {
+    const lineGraph = document.getElementById("line-graph");
     const createCanvas = () => {
         const canvas = document.createElement("canvas");
         canvas.width = 400;
         canvas.height = 200;
-        result.appendChild(canvas);
+        lineGraph.appendChild(canvas);
         return canvas;
     };
 
     // グラフが複数回描画されないように、既存のグラフをクリアする
-    result.innerHTML = '';
+    lineGraph.innerHTML = '';
 
-    //折れ線グラフ
     const lineChart = new Chart(createCanvas(), {
         type: "line",
         data: {
@@ -132,8 +98,22 @@ export function drawDashboardGraphs() {
             },
         },
     });
+}
 
-    //棒グラフ
+// 棒グラフを描画する関数
+export function drawDashboardBarGraphs() {
+    const barGraph = document.getElementById("bar-graph");
+    const createCanvas = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 400;
+        canvas.height = 200;
+        barGraph.appendChild(canvas);
+        return canvas;
+    };
+
+    // グラフが複数回描画されないように、既存のグラフをクリアする
+    barGraph.innerHTML = '';
+
     const barChart = new Chart(createCanvas(), {
         type: "bar",
         data: {
@@ -167,5 +147,38 @@ export function drawDashboardGraphs() {
                 },
             },
         },
+    });
+}
+
+/**
+ * 動的に挿入されたHTML内のBootstrapタブ機能を有効にし、
+ * タイトル書き換えイベントを設定する関数
+ * @param {HTMLElement} container - HTMLが挿入された親コンテナ
+ */
+function setupDynamicBootstrapTabs(container) {
+    // 挿入されたHTML内のタイトル要素とタブボタンを取得
+    const graphTitle = container.querySelector('#graphTitle');
+    const tabButtons = container.querySelectorAll('#evaluationTabs button[data-bs-toggle="pill"]');
+
+    if (!graphTitle) {
+        console.error('#graphTitle が見つかりません。');
+        return;
+    }
+
+    tabButtons.forEach(tabButton => {
+        // Bootstrap 5 の Tab インスタンスを手動で取得または作成
+        // (これにより、innerHTML で挿入後も Bootstrap が要素を認識します)
+        const tabInstance = bootstrap.Tab.getOrCreateInstance(tabButton);
+
+        // 'shown.bs.tab' (タブが表示された後) イベントをリッスン
+        tabButton.addEventListener('shown.bs.tab', event => {
+            // event.target はクリックされたタブボタン（<button>）
+            const newTitle = event.target.getAttribute('data-graph-title');
+
+            if (newTitle) {
+                // H2 (graphTitle) のテキストを更新
+                graphTitle.textContent = newTitle;
+            }
+        });
     });
 }

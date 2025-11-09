@@ -63,6 +63,92 @@ export function loadWarningSignContent(container) {
     setupDynamicBootstrapTabs(container);
 }
 
+// 折れ線グラフを描画する関数
+export function drawWarningSignLineGraphs() {
+    const lineGraph = document.getElementById("line-graph");
+    const createCanvas = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 400;
+        canvas.height = 200;
+        lineGraph.appendChild(canvas);
+        return canvas;
+    };
+
+    // グラフが複数回描画されないように、既存のグラフをクリアする
+    lineGraph.innerHTML = '';
+
+    const lineChart = new Chart(createCanvas(), {
+        type: "line",
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [{
+                label: "Sales",
+                data: [12, 19, 3, 5, 2, 3, 10],
+                borderColor: "rgb(75, 192, 192)",
+                tension: 0.1,
+            }],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+}
+
+// 棒グラフを描画する関数
+export function drawWarningSignBarGraphs() {
+    const barGraph = document.getElementById("bar-graph");
+    const createCanvas = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = 400;
+        canvas.height = 200;
+        barGraph.appendChild(canvas);
+        return canvas;
+    };
+
+    // グラフが複数回描画されないように、既存のグラフをクリアする
+    barGraph.innerHTML = '';
+
+    const barChart = new Chart(createCanvas(), {
+        type: "bar",
+        data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            datasets: [{
+                label: "# of Votes",
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(255, 206, 86, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(255, 159, 64, 0.2)",
+                ],
+                borderColor: [
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)",
+                ],
+                borderWidth: 1,
+            }],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+}
+
 /**
  * 動的に挿入されたHTML内のBootstrapタブ機能を有効にし、
  * タイトル書き換えイベントを設定する関数
@@ -93,41 +179,5 @@ function setupDynamicBootstrapTabs(container) {
                 graphTitle.textContent = newTitle;
             }
         });
-    });
-}
-
-// グラフを描画する関数
-export function drawWarningSignGraphs() {
-    const result = document.getElementById("js-result");
-    const createCanvas = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = 400;
-        canvas.height = 200;
-        result.appendChild(canvas);
-        return canvas;
-    };
-
-    // グラフが複数回描画されないように、既存のグラフをクリアする
-    result.innerHTML = '';
-
-    const lineChart = new Chart(createCanvas(), {
-        type: "line",
-        data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [{
-                label: "Sales",
-                data: [12, 19, 3, 5, 2, 3, 10],
-                borderColor: "rgb(75, 192, 192)",
-                tension: 0.1,
-            }],
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                },
-            },
-        },
     });
 }
