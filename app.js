@@ -6,7 +6,6 @@ const path = require('path');
 app.set('view engine', 'ejs');
 
 // 静的ファイル配信設定
-app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //ルートurl ダッシュボードページ
