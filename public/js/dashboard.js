@@ -178,17 +178,6 @@ function setupDynamicBootstrapTabs(container) {
         tabButton.addEventListener('shown.bs.tab', event => {
             // event.target はクリックされたタブボタン（<button>）
             const newTitle = event.target.getAttribute('data-graph-title');
-            const tabId = event.target.id;
-
-            switch(tabId) {
-                case ('five-step-tab'):
-                    drawDashboardLineGraphs();
-                    break;
-
-                case ('numeric-tab'):
-                    drawDashboardBarGraphs();
-                    break;
-            }
 
             if (newTitle) {
                 // H2 (graphTitle) のテキストを更新
