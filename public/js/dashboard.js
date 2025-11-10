@@ -65,7 +65,7 @@ export function loadDashboardContent(container) {
 }
 
 // 折れ線グラフを描画する関数
-export function drawDashboardLineGraphs() {
+function drawDashboardLineGraphs() {
     const lineGraph = document.getElementById("line-graph");
     const createCanvas = () => {
         const canvas = document.createElement("canvas");
@@ -101,7 +101,7 @@ export function drawDashboardLineGraphs() {
 }
 
 // 棒グラフを描画する関数
-export function drawDashboardBarGraphs() {
+function drawDashboardBarGraphs() {
     const barGraph = document.getElementById("bar-graph");
     const createCanvas = () => {
         const canvas = document.createElement("canvas");
@@ -174,6 +174,17 @@ function setupDynamicBootstrapTabs(container) {
         tabButton.addEventListener('shown.bs.tab', event => {
             // event.target はクリックされたタブボタン（<button>）
             const newTitle = event.target.getAttribute('data-graph-title');
+            const tabId = event.target.id;
+
+            switch(tabId) {
+                case ('five-step-tab'):
+                    drawDashboardLineGraphs();
+                    break;
+
+                case ('numeric-tab'):
+                    drawDashboardBarGraphs();
+                    break;
+            }
 
             if (newTitle) {
                 // H2 (graphTitle) のテキストを更新

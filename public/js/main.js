@@ -1,4 +1,4 @@
-import { loadDashboardContent, drawDashboardLineGraphs, drawDashboardBarGraphs } from './dashboard.js';
+import { loadDashboardContent } from './dashboard.js';
 import { loadGoodSignContent, drawGoodSignLineGraphs, drawGoodSignBarGraphs } from './good-sign.js';
 import { loadWarningSignContent, drawWarningSignLineGraphs, drawWarningSignBarGraphs } from './warning-sign.js';
 import { loadDangerSignContent, drawDangerSignLineGraphs, drawDangerSignBarGraphs } from './danger-sign.js';
@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //初回リロードページ
     loadDashboardContent(contentContainer); // ダッシュボードを作成
-    drawDashboardLineGraphs();
-    drawDashboardBarGraphs()
 
     // ボタンにクリックイベントを設定
 
@@ -29,8 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     dashboardButton.addEventListener('click', () => {
         // ダッシュボードのHTMLを生成・挿入する関数を呼び出す
         loadDashboardContent(contentContainer); // ダッシュボードを作成
-        drawDashboardLineGraphs();
-        drawDashboardBarGraphs();
     });
 
     // goodSignPage ボタン
