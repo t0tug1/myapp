@@ -5,7 +5,8 @@
 
 // 生活習慣ページを生成する関数
 export function loadLifestyleHabitsContent(container) {
-    // 生活習慣ページのHTMLをここに実装
+
+    // 挿入するHTMLコンテンツ
     container.innerHTML = `
                 <div class="col-12 col-lg-3">
                     <h2 class="fs-3 fw-bold text-center text-md-start mb-2 mb-md-0" id="graphTitle">折れ線グラフ</h2>
@@ -58,8 +59,19 @@ export function loadLifestyleHabitsContent(container) {
                 </div>
     `;
 
-    // 3. 【重要】HTML挿入後に、Bootstrapタブのイベントリスナーをセットアップ
-    // (Bootstrap 5 の `bootstrap.Tab` がロードされている必要があります)
+    // 現在アクティブなコンテンツをすべて非表示にする
+    const allTabPanes = document.querySelectorAll('.tab-content .tab-pane');
+    allTabPanes.forEach(pane => {
+        pane.classList.remove('active', 'show'); // .active と .show を削除
+    });
+
+    // デフォルトのコンテンツ (five-step-content) を強制的に表示する
+    const defaultPane = document.getElementById('five-step-content');
+    if (defaultPane) {
+        defaultPane.classList.add('active', 'show'); // .active と .show を追加
+    }
+
+    // HTML挿入後に、Bootstrapタブのイベントリスナーをセットアップ
     setupDynamicBootstrapTabs(container);
 
     //グラフ生成関数呼び出し
@@ -177,7 +189,6 @@ function setupDynamicBootstrapTabs(container) {
         tabButton.addEventListener('shown.bs.tab', event => {
             // event.target はクリックされたタブボタン（<button>）
             const newTitle = event.target.getAttribute('data-graph-title');
-
             if (newTitle) {
                 // H2 (graphTitle) のテキストを更新
                 graphTitle.textContent = newTitle;
