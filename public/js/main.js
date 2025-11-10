@@ -1,8 +1,8 @@
 import { loadDashboardContent } from './dashboard.js';
-import { loadGoodSignContent, drawGoodSignLineGraphs, drawGoodSignBarGraphs } from './good-sign.js';
-import { loadWarningSignContent, drawWarningSignLineGraphs, drawWarningSignBarGraphs } from './warning-sign.js';
-import { loadDangerSignContent, drawDangerSignLineGraphs, drawDangerSignBarGraphs } from './danger-sign.js';
-import { loadLifestyleHabitsContent, drawLifestyleHabitsLineGraphs, drawLifestyleHabitsBarGraphs } from './lifestyle-habits.js';
+import { loadGoodSignContent } from './good-sign.js';
+import { loadWarningSignContent } from './warning-sign.js';
+import { loadDangerSignContent } from './danger-sign.js';
+import { loadLifestyleHabitsContent } from './lifestyle-habits.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -33,31 +33,23 @@ document.addEventListener('DOMContentLoaded', () => {
     goodSignButton.addEventListener('click', () => {
         // 良好サインページのHTMLを生成・挿入する関数を呼び出す
         loadGoodSignContent(contentContainer);
-        drawGoodSignLineGraphs();
-        drawGoodSignBarGraphs();
     });
 
     // warningSignPage ボタン
     warningSignButton.addEventListener('click', () => {
         // 警告サインページのHTMLを生成・挿入する関数を呼び出す
         loadWarningSignContent(contentContainer);
-        drawWarningSignLineGraphs();
-        drawWarningSignBarGraphs();
     });
 
     // dangerSignPage ボタン
     dangerSignButton.addEventListener('click', () => {
         // 危険サインページのHTMLを生成・挿入する関数を呼び出す
         loadDangerSignContent(contentContainer);
-        drawDangerSignLineGraphs();
-        drawDangerSignBarGraphs();
     });
 
     // lifestyleHabitsPage ボタン
     lifestyleHabitsButton.addEventListener('click', () => {
         // 生活習慣ページのHTMLを生成・挿入する関数を呼び出す
         loadLifestyleHabitsContent(contentContainer);
-        drawLifestyleHabitsLineGraphs();
-        drawLifestyleHabitsBarGraphs();
     });
 });

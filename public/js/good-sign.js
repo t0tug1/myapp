@@ -62,6 +62,10 @@ export function loadGoodSignContent(container) {
     // 3. 【重要】HTML挿入後に、Bootstrapタブのイベントリスナーをセットアップ
     // (Bootstrap 5 の `bootstrap.Tab` がロードされている必要があります)
     setupDynamicBootstrapTabs(container);
+
+    //グラフ生成関数呼び出し
+    drawGoodSignLineGraphs();
+    drawGoodSignBarGraphs();
 }
 
 // 折れ線グラフを描画する関数
