@@ -11,8 +11,8 @@ services:
       - "3000:3000"
     environment:
       PGHOST: db
-      PGDATABASE: database
-      PGUSER: root
+      PGDATABASE: sample_db
+      PGUSER: user
       PGPASSWORD: password
       PGPORT: 5432
     depends_on:
@@ -25,8 +25,8 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_DATABASE: database
-      POSTGRES_USER: root
+      POSTGRES_USER: user
+      POSTGRES_DB: sample_db
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
