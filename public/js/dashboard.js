@@ -74,9 +74,10 @@ export function loadDashboardContent(container) {
     // HTML挿入後に、Bootstrapタブのイベントリスナーをセットアップ
     setupDynamicBootstrapTabs(container);
 
-    //グラフ生成関数呼び出し
+    //グラフ・表 生成関数呼び出し
     drawDashboardLineGraphs();
     drawDashboardBarGraphs();
+    drawDashboardTable();
 }
 
 // 折れ線グラフを描画する関数
@@ -162,6 +163,74 @@ function drawDashboardBarGraphs() {
                 },
             },
         },
+    });
+}
+
+// 表を描画する関数
+function drawDashboardTable(){
+    //Define variables for input elements
+    var fieldEl = document.getElementById("filter-field");
+    var typeEl = document.getElementById("filter-type");
+    var valueEl = document.getElementById("filter-value");
+
+    //Custom filter example
+    function customFilter(data){
+        return data.car && data.rating < 3;
+    }
+
+    //Trigger setFilter function with correct parameters
+    function updateFilter(){
+    var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+    var typeVal = typeEl.options[typeEl.selectedIndex].value;
+
+    var filter = filterVal == "function" ? customFilter : filterVal;
+
+    if(filterVal == "function" ){
+        typeEl.disabled = true;
+        valueEl.disabled = true;
+    }else{
+        typeEl.disabled = false;
+        valueEl.disabled = false;
+    }
+
+    if(filterVal){
+        table.setFilter(filter,typeVal, valueEl.value);
+    }
+    }
+
+    //Update filters on value change
+    document.getElementById("filter-field").addEventListener("change", updateFilter);
+    document.getElementById("filter-type").addEventListener("change", updateFilter);
+    document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+    //Clear filters on "Clear Filters" button click
+    document.getElementById("filter-clear").addEventListener("click", function(){
+    fieldEl.value = "";
+    typeEl.value = "=";
+    valueEl.value = "";
+
+    table.clearFilter();
+    });
+
+    //Build Tabulator
+    var table = new Tabulator("#example-table", {
+        data:[
+            {id:1, name:"田中太郎", gender:"男", dob:29, hobby:"読書"},
+            {id:2, name:"鈴木花子", gender:"女", dob:40, hobby:"旅行"},
+            {id:3, name:"佐藤健", gender:"男", dob:14, hobby:"映画鑑賞"}
+        ],
+
+        height:"311px",
+        layout:"fitColumns",
+        columns:[
+        {title:"Name", field:"name", width:200},
+        {title:"Progress", field:"progress", hozAlign:"right", sorter:"number"},
+        {title:"Gender", field:"gender", widthGrow:2},
+        {title:"Rating", field:"rating", hozAlign:"center"},
+        {title:"Favourite Color", field:"col", widthGrow:3},
+        {title:"age", field:"dob", hozAlign:"center", sorter:"date", widthGrow:2},
+        {title:"Driver", field:"hobby", hozAlign:"center"},
+        ],
     });
 }
 

@@ -6,12 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Self Care Tracker - セルフケア</title>
 
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrapの読み込み -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
 
-    <!-- Chart.jsライブラリの読み込み -->
+    <!-- Chart.jsの読み込み -->
     <script src="/js/chart.umd.min.js"></script>
+
+    <!-- tabulatorの読み込み -->
+    <link href="/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+    <script src="/js/tabulator.min.js"></script>
+
+    <link href="/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -135,13 +140,46 @@
 
                     <!-- グラフ・表の挿入 -->
                     <div class="tab-content">
+
+                        <!-- 5段階評価 -->
                         <div class="tab-pane fade show active" id="five-step-content" role="tabpanel">
                             <div class="col-10" id="line-graph">
                             </div>
                         </div>
+                        
+                        <!-- 3段階評価 -->
                         <div class="tab-pane fade" id="three-step-content" role="tabpanel">
-                            <p>3段階評価(○△✕)の表が表示されます。</p>
+                            <div>
+                                <select id="filter-field">
+                                    <option></option>
+                                    <option value="name">Name</option>
+                                    <option value="progress">Progress</option>
+                                    <option value="gender">Gender</option>
+                                    <option value="rating">Rating</option>
+                                    <option value="col">Favourite Colour</option>
+                                    <option value="dob">Date Of Birth</option>
+                                    <option value="car">Drives</option>
+                                    <option value="function">Drives & Rating < 3</option>
+                                </select>
+
+                                <select id="filter-type">
+                                    <option value="=">=</option>
+                                    <option value="<"><</option>
+                                    <option value="<="><=</option>
+                                    <option value=">">></option>
+                                    <option value=">=">>=</option>
+                                    <option value="!=">!=</option>
+                                    <option value="like">like</option>
+                                </select>
+
+                                <input id="filter-value" type="text" placeholder="value to filter">
+
+                                <button id="filter-clear">Clear Filter</button>
+                            </div>
+                            <div id="example-table"></div>
                         </div>
+                        
+                        <!-- 数値評価 -->
                         <div class="tab-pane fade" id="numeric-content" role="tabpanel">
                             <div class="col-10" id="bar-graph">
                             </div>
