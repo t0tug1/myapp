@@ -12,9 +12,12 @@
     "tabulator-tables": "^6.3.1"
   },
   "devDependencies": {
+    "node-pg-migrate": "^8.0.3",
     "nodemon": "^3.1.10"
   },
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "migrate": "node-pg-migrate",
+    "migrate:create": "node-pg-migrate create"
   }
 }
