@@ -15,6 +15,8 @@ services:
       PGUSER: user
       PGPASSWORD: password
       PGPORT: 5432
+      BASIC_AUTH_USER: admin
+      BASIC_AUTH_PASS: supersecret5670
     depends_on:
       db:
         condition: service_started

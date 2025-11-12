@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-const basicAuth = require('express-basic-auth');
 const path = require('path');
+const basicAuth = require('express-basic-auth');
 
 // view engine の設定
 app.set('view engine', 'ejs');
@@ -10,14 +10,14 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- 環境変数から認証情報を取得 ---
-const ADMIN_USER = process.env.BASIC_AUTH_USER || 'admin';
-const ADMIN_PASS = process.env.BASIC_AUTH_PASS || 'secret';
+const BASIC_AUTH_USER = 'admin';
+const BASIC_AUTH_PASS = 'supersecret5670';
 // ------------------------------------
 
 // 1. Basic認証ミドルウェアの設定
 app.use(basicAuth({
     // ユーザー名とパスワードのマップ
-    users: { [ADMIN_USER]: ADMIN_PASS },
+    users: { [BASIC_AUTH_USER]: BASIC_AUTH_PASS },
 
     // これを設定することで、ブラウザに認証ダイアログを表示させます。
     challenge: true,
@@ -52,7 +52,6 @@ app.get('/edit', (req, res) => {
 });
 
 //yarn dev
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
+app.listen(3000, () => {
+    console.log(`http://localhost:3000`);
 });
