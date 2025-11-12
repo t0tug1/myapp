@@ -10,8 +10,8 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- 環境変数から認証情報を取得 ---
-const BASIC_AUTH_USER = 'admin';
-const BASIC_AUTH_PASS = 'supersecret5670';
+const BASIC_AUTH_USER = process.env.BASIC_AUTH_USER;
+const BASIC_AUTH_PASS = process.env.BASIC_AUTH_PASS;
 // ------------------------------------
 
 // 1. Basic認証ミドルウェアの設定

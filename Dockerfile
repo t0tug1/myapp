@@ -1,5 +1,5 @@
 # ステージ1: 開発ステージ (Node.jsイメージを使用)
-FROM node:22.20.0 AS dev
+FROM node:22.20.0-alpine AS dep
 
 # 作業ディレクトリを設定
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # 依存関係インストール
-RUN yarn install --frozen-lockfile
+RUN yarn install --production --frozen-lockfile
 
 # アプリケーションのソースコードをコピー
 # ソースコードは、このDockerfileと同じディレクトリにあると想定
@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 3000
 
 # イメージ作成後に実行されるコマンド
-CMD [ "yarn", "dev" ]
+CMD [ "yarn", "start" ]
