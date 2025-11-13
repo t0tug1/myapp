@@ -10,8 +10,8 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- 環境変数から認証情報を取得 ---
-const BASIC_AUTH_USER = process.env.BASIC_AUTH_USER;
-const BASIC_AUTH_PASS = process.env.BASIC_AUTH_PASS;
+const BASIC_AUTH_USER = 'admin';
+const BASIC_AUTH_PASS = 'supersecret5670';
 // ------------------------------------
 
 // 1. Basic認証ミドルウェアの設定
@@ -39,6 +39,11 @@ app.get('/login', (req, res) => {
 //サインアップページ
 app.get('/signup', (req, res) => {
     res.render('signup');
+});
+
+//アカウントセッティングページ
+app.get('/account_setting', (req, res) => {
+    res.render('account_setting');
 });
 
 //セルフケアページ
