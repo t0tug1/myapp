@@ -17,7 +17,7 @@ export const up = (pgm) => {
         },
         // user_name: VARCHA, NOT NULL
         user_name: {
-            type: 'varchar',
+            type: 'varchar(50)',
             notNull: true,
         },
         // password_hash: VARCHA(255), NOT NULL
