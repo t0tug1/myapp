@@ -41,6 +41,11 @@ app.get('/signup', (req, res) => {
     res.render('signup');
 });
 
+//アカウントセッティングページ
+app.get('/account_setting', (req, res) => {
+    res.render('account_setting');
+});
+
 //セルフケアページ
 app.get('/selfcare', (req, res) => {
     res.render('selfcare');

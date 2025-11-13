@@ -8,37 +8,8 @@ export function loadDashboardContent(container) {
 
     // 挿入するHTMLコンテンツ
     container.innerHTML = `
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-lg-10">
                     <h2 class="fs-3 fw-bold text-center text-md-start mb-2 mb-md-0" id="graphTitle">折れ線グラフ</h2>
-                </div>
-
-                <div class="col-12 col-lg-7 d-flex justify-content-center justify-content-md-end my-2 my-md-0">
-                    <ul class="nav nav-pills" id="evaluationTabs" role="tablist">
-                        <li class="nav-item flex-grow-0" role="presentation">
-                            <button class="nav-link active" id="five-step-tab" data-bs-toggle="pill"
-                                data-bs-target="#five-step-content" type="button" role="tab"
-                                aria-controls="five-step-content" aria-selected="true"
-                                data-graph-title="折れ線グラフ">
-                                5段階評価
-                            </button>
-                        </li>
-
-                        <li class="nav-item flex-grow-0" role="presentation">
-                            <button class="nav-link" id="three-step-tab" data-bs-toggle="pill"
-                                data-bs-target="#three-step-content" type="button" role="tab"
-                                aria-controls="three-step-content" aria-selected="false" data-graph-title="表">
-                                3段階評価
-                            </button>
-                        </li>
-
-                        <li class="nav-item flex-grow-0" role="presentation">
-                            <button class="nav-link" id="numeric-tab" data-bs-toggle="pill"
-                                data-bs-target="#numeric-content" type="button" role="tab"
-                                aria-controls="numeric-content" aria-selected="false" data-graph-title="棒グラフ">
-                                数値評価
-                            </button>
-                        </li>
-                    </ul>
                 </div>
 
                 <div class="col-12 col-lg-2 d-flex justify-content-end">
@@ -65,8 +36,8 @@ export function loadDashboardContent(container) {
         pane.classList.remove('active', 'show'); // .active と .show を削除
     });
 
-    // デフォルトのコンテンツ (five-step-content) を強制的に表示する
-    const defaultPane = document.getElementById('five-step-content');
+    // デフォルトのコンテンツ (comprehensive-content) を強制的に表示する
+    const defaultPane = document.getElementById('comprehensive-content');
     if (defaultPane) {
         defaultPane.classList.add('active', 'show'); // .active と .show を追加
     }
@@ -75,162 +46,94 @@ export function loadDashboardContent(container) {
     setupDynamicBootstrapTabs(container);
 
     //グラフ・表 生成関数呼び出し
-    drawDashboardLineGraphs();
-    drawDashboardBarGraphs();
-    drawDashboardTable();
+    drawComprehensiveGraphs();
 }
 
 // 折れ線グラフを描画する関数
-function drawDashboardLineGraphs() {
-    const lineGraph = document.getElementById("line-graph");
+function drawComprehensiveGraphs() {
+    const comprehensiveGraph = document.getElementById("comprehensive-graph");
     const createCanvas = () => {
         const canvas = document.createElement("canvas");
         canvas.width = 400;
         canvas.height = 200;
-        lineGraph.appendChild(canvas);
+        comprehensiveGraph.appendChild(canvas);
         return canvas;
     };
 
     // グラフが複数回描画されないように、既存のグラフをクリアする
-    lineGraph.innerHTML = '';
+    comprehensiveGraph.innerHTML = '';
 
-    const lineChart = new Chart(createCanvas(), {
-        type: "line",
+    const salesData = [60, 70, 50, 60, 30, 50, 70];
+    const labels = ['月', '火', '水', '木', '金', '土', '日'];
+
+    // --- ここからChart.jsのロジック ---
+
+    // 1. 平均値の計算
+    const totalSales = salesData.reduce((sum, value) => sum + value, 0);
+    const averageSales = totalSales / salesData.length;
+    
+    // 2. 平均値をグラフの項目数分繰り返す配列を作成
+    const averageLineData = new Array(salesData.length).fill(averageSales);
+
+    // 3. キャンバスを動的に作成
+    const myCanvas = createCanvas();
+    const ctx = myCanvas.getContext('2d');
+
+    // 4. グラフの描画
+    const mixedChart = new Chart(ctx, {
+        type: 'bar', // ベースとなるグラフタイプ
         data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [{
-                label: "Sales",
-                data: [12, 19, 3, 5, 2, 3, 10],
-                borderColor: "rgb(75, 192, 192)",
-                tension: 0.1,
-            }],
+            labels: labels,
+            datasets: [
+                {
+                    // データセット 1: 棒グラフ (結果)
+                    label: '総合評価（％）',
+                    data: salesData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)', // 青色
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    order: 2 // 描画順序 (平均線より手前に描画)
+                },
+                {
+                    // データセット 2: 折れ線グラフ (平均線)
+                    label: `平均値: ${averageSales.toFixed(1)} ％`,
+                    data: averageLineData,
+                    type: 'line', // このデータセットのみタイプを 'line' に指定
+                    fill: false,
+                    borderColor: 'rgb(255, 99, 132)', // 赤色
+                    borderWidth: 3,
+                    pointRadius: 0, // ポイントを非表示にする
+                    tension: 0, // 直線にする
+                    order: 1 // 描画順序 (棒グラフより奥に描画)
+                }
+            ]
         },
         options: {
-            responsive: true,
+            // createCanvasで固定サイズ(400x200)を指定したため、
+            // Chart.jsのレスポンシブ機能をオフにします。
+            responsive: true, 
+            maintainAspectRatio: true, // アスペクト比も固定します
+            
             scales: {
                 y: {
-                    beginAtZero: true,
-                },
+                    min: 0,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: '評価 (％)'
+                    }
+                }
             },
-        },
-    });
-}
-
-// 棒グラフを描画する関数
-function drawDashboardBarGraphs() {
-    const barGraph = document.getElementById("bar-graph");
-    const createCanvas = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = 400;
-        canvas.height = 200;
-        barGraph.appendChild(canvas);
-        return canvas;
-    };
-
-    // グラフが複数回描画されないように、既存のグラフをクリアする
-    barGraph.innerHTML = '';
-
-    const barChart = new Chart(createCanvas(), {
-        type: "bar",
-        data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            datasets: [{
-                label: "# of Votes",
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    "rgba(255, 99, 132, 0.2)",
-                    "rgba(54, 162, 235, 0.2)",
-                    "rgba(255, 206, 86, 0.2)",
-                    "rgba(75, 192, 192, 0.2)",
-                    "rgba(153, 102, 255, 0.2)",
-                    "rgba(255, 159, 64, 0.2)",
-                ],
-                borderColor: [
-                    "rgba(255, 99, 132, 1)",
-                    "rgba(54, 162, 235, 1)",
-                    "rgba(255, 206, 86, 1)",
-                    "rgba(75, 192, 192, 1)",
-                    "rgba(153, 102, 255, 1)",
-                    "rgba(255, 159, 64, 1)",
-                ],
-                borderWidth: 1,
-            }],
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
+            plugins: {
+                legend: {
+                    display: true,
                 },
-            },
-        },
-    });
-}
-
-// 表を描画する関数
-function drawDashboardTable(){
-    //Define variables for input elements
-    var fieldEl = document.getElementById("filter-field");
-    var typeEl = document.getElementById("filter-type");
-    var valueEl = document.getElementById("filter-value");
-
-    //Custom filter example
-    function customFilter(data){
-        return data.car && data.rating < 3;
-    }
-
-    //Trigger setFilter function with correct parameters
-    function updateFilter(){
-    var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
-    var typeVal = typeEl.options[typeEl.selectedIndex].value;
-
-    var filter = filterVal == "function" ? customFilter : filterVal;
-
-    if(filterVal == "function" ){
-        typeEl.disabled = true;
-        valueEl.disabled = true;
-    }else{
-        typeEl.disabled = false;
-        valueEl.disabled = false;
-    }
-
-    if(filterVal){
-        table.setFilter(filter,typeVal, valueEl.value);
-    }
-    }
-
-    //Update filters on value change
-    document.getElementById("filter-field").addEventListener("change", updateFilter);
-    document.getElementById("filter-type").addEventListener("change", updateFilter);
-    document.getElementById("filter-value").addEventListener("keyup", updateFilter);
-
-    //Clear filters on "Clear Filters" button click
-    document.getElementById("filter-clear").addEventListener("click", function(){
-    fieldEl.value = "";
-    typeEl.value = "=";
-    valueEl.value = "";
-
-    table.clearFilter();
-    });
-
-    //Build Tabulator
-    var table = new Tabulator("#example-table", {
-        data:[
-            {id:1, name:"田中太郎", gender:"男", dob:29, hobby:"読書"},
-            {id:2, name:"鈴木花子", gender:"女", dob:40, hobby:"旅行"},
-            {id:3, name:"佐藤健", gender:"男", dob:14, hobby:"映画鑑賞"}
-        ],
-
-        height:"311px",
-        layout:"fitColumns",
-        columns:[
-        {title:"Name", field:"name", width:200},
-        {title:"Progress", field:"progress", hozAlign:"right", sorter:"number"},
-        {title:"Gender", field:"gender", widthGrow:2},
-        {title:"Rating", field:"rating", hozAlign:"center"},
-        {title:"Favourite Color", field:"col", widthGrow:3},
-        {title:"age", field:"dob", hozAlign:"center", sorter:"date", widthGrow:2},
-        {title:"Driver", field:"hobby", hozAlign:"center"},
-        ],
+                title: {
+                    display: true,
+                    text: '「良好サイン」「注意サイン」「悪化サイン」の総合評価'
+                }
+            }
+        }
     });
 }
 

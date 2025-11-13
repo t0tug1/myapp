@@ -13,39 +13,48 @@
 <body>
     <div class="d-flex justify-content-center align-items-center vh-100">
 
-        <div class="card shadow-lg p-5 login-creat-card">
+        <div class="card shadow-lg login-creat-card">
 
             <div class="card-body p-5">
 
-                <h1 class="card-title text-center fw-normal mb-5 pb-3 border-bottom">新規作成</h1>
+                <h1 class="card-title text-center fw-normal mb-3 pb-3 border-bottom">新規作成</h1>
 
                 <form>
-                    <div class="mb-3">
-                        <label for="username" class="form-label fw-bold">ユーザー名</label>
-                        <input type="text" class="form-control" id="old-username" placeholder="ユーザー名">
+                    <div class="mb-2">
+                        <p>user-name</p>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="username" class="form-label fw-bold">新しいユーザー名</label>
+                    <div class="mb-2">
+                        <label for="username" class="form-label fw-bold"></label>
                         <input type="text" class="form-control" id="new-username" placeholder="新しいユーザー名">
                     </div>
 
-                    <div class="mb-4">
-                        <label for="password" class="form-label fw-bold">パスワード</label>
-                        <input type="password" class="form-control" id="old-password" placeholder="パスワード">
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="password" class="form-label fw-bold">新しいパスワード</label>
-                        <input type="password" class="form-control" id="new-password" placeholder="新しいパスワード">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-block w-100 fw-bold py-3">
+                    <button type="submit" class="btn btn-primary btn-block fw-bold py-2 px-3 ">
                         変更
                     </button>
                 </form>
+                    <hr class="my-3">
 
-                <div class="text-center pt-4">
+                <form>
+                    <div class="mb-2">
+                        <label for="password" class="form-label fw-bold"></label>
+                        <input type="password" class="form-control" id="old-password" placeholder="パスワード">
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="password" class="form-label fw-bold"></label>
+                        <input type="password" class="form-control" id="new-password" placeholder="新しいパスワード">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block fw-bold py-2 px-3 ">
+                        変更
+                    </button>
+
+                    <hr class="my-4">
+
+                </form>
+
+                <div class="text-center pt-2">
                     <a href="/" class="btn btn-outline-primary w-100 fw-bold py-3">
                         戻る
                     </a>

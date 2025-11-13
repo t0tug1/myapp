@@ -85,8 +85,6 @@ function drawGoodSignLineGraphs() {
     const lineGraph = document.getElementById("line-graph");
     const createCanvas = () => {
         const canvas = document.createElement("canvas");
-        canvas.width = 400;
-        canvas.height = 200;
         lineGraph.appendChild(canvas);
         return canvas;
     };
@@ -121,8 +119,6 @@ function drawGoodSignBarGraphs() {
     const barGraph = document.getElementById("bar-graph");
     const createCanvas = () => {
         const canvas = document.createElement("canvas");
-        canvas.width = 400;
-        canvas.height = 200;
         barGraph.appendChild(canvas);
         return canvas;
     };
