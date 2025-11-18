@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ja">
 
 <head>
@@ -19,15 +20,15 @@
 
                 <h1 class="card-title text-center fw-normal mb-5 pb-3 border-bottom">新規作成</h1>
 
-                <form>
+                <form action="/signup" method="post">
                     <div class="mb-3">
                         <label for="username" class="form-label fw-bold">ユーザー名</label>
-                        <input type="text" class="form-control" id="username" placeholder="ユーザー名">
+                        <input type="text" class="form-control" id="username" name="username" autocomplete="off" placeholder="ユーザー名 50文字以内">
                     </div>
 
                     <div class="mb-4">
                         <label for="password" class="form-label fw-bold">パスワード</label>
-                        <input type="password" class="form-control" id="password" placeholder="パスワード">
+                        <input type="password" class="form-control" id="password" name="password" autocomplete="off" placeholder="パスワード">
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block w-100 fw-bold py-3">
