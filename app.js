@@ -45,8 +45,64 @@ app.get('/', (req, res) => {
 
 //ログインページ
 app.get('/login', (req, res) => {
-    console.log("ログインページ")
     res.render('login');
+});
+
+//ログイン処理
+app.post('/login', async(req, res) => {
+    const { username, password } = req.body;
+
+    // 入力が空の場合は弾く
+    if (!username || !password) {
+        console.log('Username or password missing');
+        return res.redirect('/login');
+    }
+
+    let client;
+    try {
+        // プールからクライアント（接続）を取得
+        client = await pool.connect();
+        
+        // 1. ユーザー名でユーザーを検索 (SQLインジェクション対策のため $1 プレースホルダーを使用)
+        const queryText = 'SELECT * FROM users WHERE user_name = $1';
+        const result = await client.query(queryText, [username]);
+
+        if (result.rows.length > 0) {
+            // ユーザーが見つかった場合
+            const user = result.rows[0];
+
+            const match = await bcrypt.compare(password, user.password_hash);
+            
+            if (match) { // <-- 危険な平文比較
+                // パスワードが一致した場合
+                console.log(`Success: User '${username}' logged in.`);
+                
+                // TODO: ここでセッションを開始する処理（例: express-session）を入れる
+                
+                // /dashboard にリダイレクト
+                res.redirect('/');
+            } else {
+                // パスワードが不一致の場合
+                console.log(`Failure: Invalid password for user '${username}'.`);
+                res.redirect('/login');
+            }
+
+        } else {
+            // ユーザー名が見つからなかった場合
+            console.log(`Failure: User '${username}' not found.`);
+            res.redirect('/login');
+        }
+
+    } catch (err) {
+        // データベースエラーなど
+        console.error('Login error:', err.stack);
+        res.redirect('/login'); // エラーが発生した場合もログインページに戻す
+    } finally {
+        if (client) {
+            // 使用したクライアントをプールに返却
+            client.release();
+        }
+    }
 });
 
 //サインアップページ
