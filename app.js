@@ -128,6 +128,20 @@ app.post('/signup', async (req, res) => {
         return res.redirect('/signup');
     }
 
+    // パスワードの文字種チェック (半角英数字のみ)
+    // 正規表現: /^[a-zA-Z0-9]+$/
+    // ^ ... 文字列の先頭
+    // [a-zA-Z0-9] ... a～z, A～Z, 0～9 のいずれか
+    // + ... 1文字以上
+    // $ ... 文字列の末尾
+    const passwordRegex = /^[a-zA-Z0-9]+$/;
+
+    if (!passwordRegex.test(password)) {
+        console.log('Signup Failure: Password contains non-alphanumeric characters.');
+        // 半角英数字以外が入力されたら /signup にリダイレクト
+        return res.redirect('/signup');
+    }
+
     let client;
     try {
         // パスワードをハッシュ化
