@@ -4,6 +4,7 @@
   "main": "app.js",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "bootstrap": "^5.3.7",
     "chart.js": "^4.5.1",
     "ejs": "^3.1.10",
