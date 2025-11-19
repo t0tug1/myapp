@@ -13,23 +13,23 @@
 
 <body>
     <div class="d-flex justify-content-center align-items-center vh-100">
-
         <div class="card shadow-lg p-5 login-creat-card">
-
             <div class="card-body p-5">
-
                 <h1 class="card-title text-center fw-normal mb-5 pb-3 border-bottom">ログイン</h1>
 
-                <form action="/login" method="post">
+                <!-- フォームのデフォルト動作を停止し、JSで送信する -->
+                <form id="loginForm">
                     <div class="mb-3">
                         <label for="username" class="form-label fw-bold">ユーザー名</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="ユーザー名">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="ユーザー名" required>
                     </div>
 
                     <div class="mb-1">
                         <label for="password" class="form-label fw-bold">パスワード</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="パスワード">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="パスワード" required>
                     </div>
+
+                    <div id="errorMessage" class="text-danger mt-2 mb-2" style="display: none;"></div>
 
                     <div class="form-check mb-3">
                         <input class="form-check-input" type="checkbox" value="" id="rememberMe">
@@ -58,6 +58,52 @@
         </div>
     </div>
     <script src="/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ログイン処理スクリプト -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // フォーム送信キャンセル
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // 認証成功
+                    console.log('Login successful');
+                    
+                    // アクセストークンはメモリ(変数)に保存されるが、
+                    // 画面遷移すると消えるため、遷移先で再度Refresh処理を行うか、
+                    // SPA的に画面を書き換える必要がある。
+                    // 要件通り「ダッシュボードへ遷移」を行う。
+                    window.location.href = '/';
+                    
+                    // 注: メモリ内の data.accessToken はここで破棄されます。
+                    // ダッシュボード側でCookie(Refresh Token)を使って再取得します。
+                } else {
+                    // 認証失敗
+                    errorDiv.textContent = data.message || 'ログインに失敗しました';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorDiv.textContent = 'サーバーエラーが発生しました';
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
 </body>
+
 
 </html>
