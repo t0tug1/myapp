@@ -1,30 +1,83 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const basicAuth = require('express-basic-auth');
-const bcrypt = require('bcrypt'); // bcrypt
-const { Pool } = require('pg'); // node-postgres
+const bcrypt = require('bcrypt');
+const { Pool } = require('pg');
+const jwt = require('jsonwebtoken');
+const { expressjwt: expressJwt } = require('express-jwt');
+const Redis = require('ioredis');
+const crypto = require('crypto');
+const cookieParser = require('cookie-parser');
 
-// view engine の設定
+// --- 設定・定数 ---
+const saltRounds = 10;
+
+// 本番環境では必ず環境変数から読み込んでください
+const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || 'access_secret_key_change_me';
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'refresh_secret_key_change_me';
+const ACCESS_TOKEN_EXPIRY = '15m';  // アクセストークン有効期限
+const REFRESH_TOKEN_EXPIRY = '7d';  // リフレッシュトークン有効期限
+const REFRESH_TOKEN_EXPIRY_SECONDS = 7 * 24 * 60 * 60; // Redis用 (秒)
+const BASIC_AUTH_USER = 'admin';
+const BASIC_AUTH_PASS = 'supersecret5670';
+
+// Redis クライアント初期化
+const redis = new Redis({
+    host: process.env.REDIS_HOST || '127.0.0.1',
+    port: process.env.REDIS_PORT || 6379,
+});
+
+// DB プール初期化
+const pool = new Pool();
+
+// --- ミドルウェア設定 ---
 app.set('view engine', 'ejs');
-
-// 静的ファイル配信設定
 app.use(express.static(path.join(__dirname, 'public')));
-
-// フォームデータを解析するためのミドルウェア
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//poolインスタンス作成
-const pool = new Pool();
+// Cookie解析用
+// cookie-parser ミドルウェアの使用
+// これにより req.cookies オブジェクトが自動的に生成されます
+app.use(cookieParser());
 
-// Bcryptのソルトラウンド（ハッシュ化の計算コスト）
-const saltRounds = 10;
+// --- JWT ヘルパー関数 ---
 
-// --- 環境変数から認証情報を取得 ---
-const BASIC_AUTH_USER = 'admin';
-const BASIC_AUTH_PASS = 'supersecret5670';
-// ------------------------------------
+// アクセストークン生成
+const generateAccessToken = (user) => {
+    return jwt.sign(
+        { userId: user.id, username: user.user_name },
+        JWT_ACCESS_SECRET,
+        { expiresIn: ACCESS_TOKEN_EXPIRY }
+    );
+};
+
+// リフレッシュトークン生成とRedisへの保存 (RTR対応)
+const generateAndStoreRefreshToken = async (user, familyId = null) => {
+    // 新しいFamily IDの発行（なければ）
+    const fid = familyId || crypto.randomUUID();
+    // トークンごとのユニークID (JTI)
+    const jti = crypto.randomUUID();
+
+    const refreshToken = jwt.sign(
+        { userId: user.id, jti, fid },
+        JWT_REFRESH_SECRET,
+        { expiresIn: REFRESH_TOKEN_EXPIRY }
+    );
+
+    // Redisに保存
+    // Key: rt:{jti} -> Value: { userId, familyId, isUsed }
+    const key = `rt:${jti}`;
+    const value = JSON.stringify({
+        userId: user.id,
+        familyId: fid,
+        isUsed: false
+    });
+    
+    await redis.set(key, value, 'EX', REFRESH_TOKEN_EXPIRY_SECONDS);
+
+    return refreshToken;
+};
 
 // 1. Basic認証ミドルウェアの設定
 app.use(basicAuth({
@@ -38,71 +91,157 @@ app.use(basicAuth({
     unauthorizedResponse: '認証情報が正しくありません。'
 }));
 
-//ルートurl ダッシュボードページ
-app.get('/', (req, res) => {
+// --- ルート設定 ---
+
+// 1. ダッシュボード (保護されたページ)
+// SSRのため、Cookieにリフレッシュトークンがあるか簡易チェックして表示
+// 本格的なデータ取得はクライアントサイドでアクセストークンを用いて行う想定
+app.get('/', async (req, res) => {
+    // cookie-parserにより req.cookies['refreshToken'] でアクセス可能
+    const refreshToken = req.cookies['refreshToken'];
+    
+    if (!refreshToken) {
+        return res.redirect('/login');
+    }
+
+    // ここで厳密に検証するか、画面表示だけ許可してAPIで弾くかはポリシー次第
+    // 今回は画面を表示させる
     res.render('dashboard');
 });
 
-//ログインページ
+// 2. ログインページ
 app.get('/login', (req, res) => {
     res.render('login');
 });
 
-//ログイン処理
-app.post('/login', async(req, res) => {
+// 3. ログイン処理 (API)
+app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
-    // 入力が空の場合は弾く
     if (!username || !password) {
-        console.log('Username or password missing');
-        return res.redirect('/login');
+        return res.status(400).json({ message: 'Username and password are required' });
     }
 
     let client;
     try {
-        // プールからクライアント（接続）を取得
         client = await pool.connect();
-        
-        // 1. ユーザー名でユーザーを検索 (SQLインジェクション対策のため $1 プレースホルダーを使用)
-        const queryText = 'SELECT * FROM users WHERE user_name = $1';
-        const result = await client.query(queryText, [username]);
+        const result = await client.query('SELECT * FROM users WHERE user_name = $1', [username]);
 
-        if (result.rows.length > 0) {
-            // ユーザーが見つかった場合
-            const user = result.rows[0];
-
-            const match = await bcrypt.compare(password, user.password_hash);
-            
-            if (match) { // <-- 危険な平文比較
-                // パスワードが一致した場合
-                console.log(`Success: User '${username}' logged in.`);
-                
-                // TODO: ここでセッションを開始する処理（例: express-session）を入れる
-                
-                // /dashboard にリダイレクト
-                res.redirect('/');
-            } else {
-                // パスワードが不一致の場合
-                console.log(`Failure: Invalid password for user '${username}'.`);
-                res.redirect('/login');
-            }
-
-        } else {
-            // ユーザー名が見つからなかった場合
-            console.log(`Failure: User '${username}' not found.`);
-            res.redirect('/login');
+        if (result.rows.length === 0) {
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
+
+        const user = result.rows[0];
+        const match = await bcrypt.compare(password, user.password_hash);
+
+        if (!match) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // 認証成功: トークン生成
+        const accessToken = generateAccessToken(user);
+        const refreshToken = await generateAndStoreRefreshToken(user); // 新規FamilyID
+
+        // リフレッシュトークンをHttpOnly Cookieに設定
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // HTTPS環境ならtrue
+            sameSite: 'Strict',
+            maxAge: REFRESH_TOKEN_EXPIRY_SECONDS * 1000
+        });
+
+        // アクセストークンはJSONボディで返す（メモリ保存用）
+        res.json({ accessToken, message: 'Login successful' });
 
     } catch (err) {
-        // データベースエラーなど
-        console.error('Login error:', err.stack);
-        res.redirect('/login'); // エラーが発生した場合もログインページに戻す
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
     } finally {
-        if (client) {
-            // 使用したクライアントをプールに返却
-            client.release();
-        }
+        if (client) client.release();
     }
+});
+
+// 4. トークンリフレッシュ処理 (RTRの中核)
+app.post('/refresh-token', async (req, res) => {
+    const incomingRefreshToken = req.cookies['refreshToken'];
+
+    if (!incomingRefreshToken) {
+        return res.status(401).json({ message: 'No refresh token provided' });
+    }
+
+    try {
+        // 1. JWT署名検証
+        const decoded = jwt.verify(incomingRefreshToken, JWT_REFRESH_SECRET);
+        const { jti, fid, userId } = decoded;
+
+        // 2. Redisからトークン情報を取得
+        const key = `rt:${jti}`;
+        const tokenDataString = await redis.get(key);
+
+        // トークンがRedisにない（期限切れ等）
+        if (!tokenDataString) {
+            return res.status(403).json({ message: 'Invalid refresh token' });
+        }
+
+        const tokenData = JSON.parse(tokenDataString);
+
+        // 3. Family IDがブロックリストに入っていないか確認 (Replay Attack対策)
+        const blocklistKey = `blocklist:${fid}`;
+        const isBlocked = await redis.get(blocklistKey);
+
+        if (isBlocked) {
+            // 危険: このファミリーは侵害されている
+            await redis.del(key); // 現在のトークンも削除
+            res.clearCookie('refreshToken');
+            return res.status(403).json({ message: 'Security alert: Replay attack detected. Please login again.' });
+        }
+
+        // 4. 使用済みトークンの再利用チェック (RTR)
+        if (tokenData.isUsed) {
+            // **侵害検知 (Replay Attack)**
+            // 既に使われたトークンが再度送られてきた -> トークン奪取の可能性
+            // このFamily IDをブロックリストに追加し、全ての関連トークンを無効化する
+            await redis.set(blocklistKey, '1', 'EX', REFRESH_TOKEN_EXPIRY_SECONDS);
+            
+            res.clearCookie('refreshToken');
+            return res.status(403).json({ message: 'Security alert: Replay attack detected. All sessions revoked.' });
+        }
+
+        // 5. 正常なローテーション処理
+        // 現在のトークンを「使用済み」にする
+        tokenData.isUsed = true;
+        // RedisのTTLを維持しつつ更新 (KEEPTTLオプションはRedis 6.0+)
+        // 簡易的に残り時間を計算してセット、または十分な時間を再設定
+        await redis.set(key, JSON.stringify(tokenData), 'EX', REFRESH_TOKEN_EXPIRY_SECONDS);
+
+        // 新しいトークンペアの発行 (同じFamily IDを引き継ぐ)
+        const user = { id: userId, user_name: 'fetched_from_db_if_needed' }; // 必要ならDB再取得
+        const newAccessToken = generateAccessToken(user);
+        const newRefreshToken = await generateAndStoreRefreshToken(user, fid);
+
+        // Cookie更新
+        res.cookie('refreshToken', newRefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: REFRESH_TOKEN_EXPIRY_SECONDS * 1000
+        });
+
+        // 新しいアクセストークンを返す
+        res.json({ accessToken: newAccessToken });
+
+    } catch (err) {
+        console.error('Refresh error:', err);
+        res.clearCookie('refreshToken');
+        return res.status(403).json({ message: 'Invalid refresh token' });
+    }
+});
+
+// 5. ログアウト
+app.post('/logout', (req, res) => {
+    // アクセストークンはクライアント側で破棄
+    res.clearCookie('refreshToken');
+    res.json({ message: 'Logged out' });
 });
 
 //サインアップページ
