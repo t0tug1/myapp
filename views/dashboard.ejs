@@ -194,6 +194,80 @@
             </main>
         </div>
     </div>
+    <!-- メインロジック -->
+    <script type="module">
+        // import src="/js/main.js"; // 必要に応じて既存モジュールを使用
+
+        // --- アクセストークン管理 (メモリ内) ---
+        let accessToken = null;
+
+        // ページ読み込み時にトークンを取得する
+        // (HttpOnly Cookieのリフレッシュトークンを使用)
+        async function initializeSession() {
+            try {
+                const response = await fetch('/refresh-token', {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    accessToken = data.accessToken;
+                    console.log('Access Token refreshed and stored in memory.');
+                    // ここで初期データのロードなどを開始
+                    // loadDashboardData();
+                } else {
+                    console.warn('Session invalid or expired.');
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Session initialization error:', error);
+                window.location.href = '/login';
+            }
+        }
+
+        // 認証付きAPIリクエストを行うヘルパー関数
+        async function authenticatedFetch(url, options = {}) {
+            if (!accessToken) {
+                // トークンがなければリフレッシュを試みる
+                await initializeSession();
+            }
+
+            // Authorizationヘッダー付与
+            options.headers = {
+                ...options.headers,
+                'Authorization': `Bearer ${accessToken}`
+            };
+
+            let response = await fetch(url, options);
+
+            // アクセストークン切れ (401) の場合
+            if (response.status === 401) {
+                // トークン再取得（ローテーション）
+                await initializeSession();
+                // 新しいトークンでリトライ
+                options.headers['Authorization'] = `Bearer ${accessToken}`;
+                response = await fetch(url, options);
+            }
+
+            return response;
+        }
+
+        // ログアウト処理
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            await fetch('/logout', { method: 'POST' });
+            accessToken = null;
+            window.location.href = '/login';
+        });
+
+        // 初期化実行
+        initializeSession();
+        
+        // 外部スクリプトからも使えるように公開する場合
+        window.authenticatedFetch = authenticatedFetch;
+
+    </script>
+    <!-- 既存の main.js は authenticatedFetch を使うように修正が必要かもしれません -->
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="/js/main.js"></script>
 
