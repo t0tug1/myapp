@@ -47,7 +47,7 @@ app.use(cookieParser());
 // アクセストークン生成
 const generateAccessToken = (user) => {
     return jwt.sign(
-        { userId: user.id, username: user.user_name },
+        { userId: user.user_id, username: user.user_name },
         JWT_ACCESS_SECRET,
         { expiresIn: ACCESS_TOKEN_EXPIRY }
     );
@@ -61,7 +61,7 @@ const generateAndStoreRefreshToken = async (user, familyId = null) => {
     const jti = crypto.randomUUID();
 
     const refreshToken = jwt.sign(
-        { userId: user.id, jti, fid },
+        { userId: user.user_id, jti, fid },
         JWT_REFRESH_SECRET,
         { expiresIn: REFRESH_TOKEN_EXPIRY }
     );
@@ -70,7 +70,7 @@ const generateAndStoreRefreshToken = async (user, familyId = null) => {
     // Key: rt:{jti} -> Value: { userId, familyId, isUsed }
     const key = `rt:${jti}`;
     const value = JSON.stringify({
-        userId: user.id,
+        userId: user.user_id,
         familyId: fid,
         isUsed: false
     });
