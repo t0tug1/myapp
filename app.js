@@ -23,8 +23,9 @@ const BASIC_AUTH_PASS = 'supersecret5670';
 
 // Redis クライアント初期化
 const redis = new Redis({
-    host: process.env.REDIS_HOST || '127.0.0.1',
+    host: process.env.REDIS_HOST,
     port: process.env.REDIS_PORT || 6379,
+    password: process.env.REDIS_PASSWORD,
 });
 
 // DB プール初期化
