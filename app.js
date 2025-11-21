@@ -240,7 +240,7 @@ app.post('/refresh-token', async (req, res) => {
 });
 
 // 5. ログアウト
-app.post('/logout', (req, res) => {
+app.post('/logout', async(req, res) => {
     // アクセストークンはクライアント側で破棄
      const incomingRefreshToken = req.cookies['refreshToken'];
 
