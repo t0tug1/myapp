@@ -242,8 +242,39 @@ app.post('/refresh-token', async (req, res) => {
 // 5. ログアウト
 app.post('/logout', (req, res) => {
     // アクセストークンはクライアント側で破棄
+     const incomingRefreshToken = req.cookies['refreshToken'];
+
+    // トークンがない場合はそのままCookie削除して終了
+    if (!incomingRefreshToken) {
+        res.clearCookie('refreshToken');
+        return res.json({ message: 'Logged out (No token found)' });
+    }
+
+    try {
+        // トークンをデコードして Family ID (fid) を取得
+        // 検証エラー（期限切れなど）が出ても、ログアウト処理自体は進めるため try-catch する
+        const decoded = jwt.verify(incomingRefreshToken, JWT_REFRESH_SECRET);
+        const { jti, fid } = decoded;
+
+        // トークンファミリー全体を無効化
+        // ブロックリストに Family ID を追加
+        const blocklistKey = `blocklist:${fid}`;
+        await redis.set(blocklistKey, '1', 'EX', REFRESH_TOKEN_EXPIRY_SECONDS);
+
+        // 個別のトークンデータも削除してメモリを節約
+        const key = `rt:${jti}`;
+        await redis.del(key);
+
+        console.log(`Family ${fid} has been blocked via logout.`);
+
+    } catch (err) {
+        // トークンが期限切れや不正な場合でも、ログアウト処理（Cookie削除）は続行
+        console.log('Logout token verification failed (ignoring):', err.message);
+    }
+
+    // 3. クライアント側のCookieを削除
     res.clearCookie('refreshToken');
-    res.json({ message: 'Logged out' });
+    res.json({ message: 'Logged out successfully' });
 });
 
 //サインアップページ
