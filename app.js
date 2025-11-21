@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bcrypt = require('bcrypt');
+const basicAuth = require('express-basic-auth');
 const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
 const { expressjwt: expressJwt } = require('express-jwt');
